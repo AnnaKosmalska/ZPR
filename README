@@ -22,3 +22,5 @@ po wpisaniu adresu w przeglądarce http://127.0.0.1:3000 powinna pojawić się p
 server - zawiera plik konfiguracyjny dla lighttpd
 client - zawiera plik .html i pliki .js wykonywane po stronie klienta
 calculation - zawiera pliki .py i .cpp wykonywane po stronie serwera
+***************************************
+śledzenie: https://github.com/AniaWujek/ZPR
