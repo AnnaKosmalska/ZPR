@@ -1,4 +1,5 @@
 # R. Nowak, 2010-03-13   -*- mode: Python; -*-
+#zaadaptowany na potrzeby naszego projektu
 import os, shutil, platform, re
 
 import SCons.Builder
