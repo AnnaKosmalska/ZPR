@@ -1,0 +1,24 @@
+Szkielet projektu z przedmiotu ZPR
+prowadzący: Paweł Zawistowski
+zespół: Katarzyna Olszewska, Anna Wujek, Łukasz Korpal
+temat: gra wieloosobwa (MEMO)
+
+Szkielet aplikacji zrealizowanej jako cienki klient przez przeglądarkę, wykorzystujący:
+HTML + JavaScript(jQuery) jako interfejs graficzny
+lighttpd + Python, boost::python + C++ jako serwer i logika aplikacji
+
+wymaga: boost, lighttpd, SCons, python (w SConstruct należy ustawić odpowiednie ścieżki do boost'a i pythona)
+
+kompilacja: scons
+
+uruchomienie serwera:
+cd server
+lighttpd -D -f lighttpd.conf
+
+testowanie:
+po wpisaniu adresu w przeglądarce http://127.0.0.1:3000 powinna pojawić się przykładowa strona, wywołująca odpowiednie funkcje
+
+***************************************
+server - zawiera plik konfiguracyjny dla lighttpd
+client - zawiera plik .html i pliki .js wykonywane po stronie klienta
+calculation - zawiera pliki .py i .cpp wykonywane po stronie serwera
