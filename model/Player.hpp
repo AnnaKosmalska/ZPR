@@ -1,3 +1,7 @@
+
+#ifndef PLAYER
+#define PLAYER
+
 #include <Deck.hpp>
 
 class Player
@@ -13,17 +17,14 @@ private:
 
 public:
   
-  Player(string name);
+  Player(string name, int ID);
   ~Player();
   void addToDeck(Tile* pair);
-
-
-  void setName(string name);
   string getName();
-  void setID(int ID);
   int getID();
-  void setDeck(Deck* deck);
   Deck* getDeck();
-  void addPair(Tile* pair);
+  int getScore();
   
 }
+
+#endif
