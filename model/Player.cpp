@@ -41,3 +41,4 @@ Deck* Player::getDeck()
 int Player::getScore(){
   return score;
 }
+
