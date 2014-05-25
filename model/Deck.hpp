@@ -11,7 +11,7 @@ class Deck
 {
 private:
   // lista kart zdobytych
-  std::vector<Tile*> deck;
+  std::vector<Tile> deck;
 
 public:
   // konstruktor

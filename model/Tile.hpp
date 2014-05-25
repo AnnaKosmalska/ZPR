@@ -5,9 +5,9 @@
 #ifndef TILE
 #define TILE
 
-typedef std::pair<int, int> Position;
-typedef std::pair<Position, Tile*> TileOnBoard;
-typedef std::pair<TileOnBoard, TileOnBoard> PairOnBoard;
+typedef std::pair<unsigned, unsigned> Position;
+typedef std::pair<Position, unsigned> TileOnBoard;
+typedef std::pair<Position, Position> PairOnBoard;
 
 class Tile
 {

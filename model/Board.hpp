@@ -9,15 +9,15 @@ class Board
 {
 private:
   Board();
-  Board(const Board&);
+
   
   // lista graczy grajacych na danej planszy
   std::vector<Player> players;
   // zbior kart lezacych na stole; jezeli null - karta zostala zabrana
   // klucz - pozycja na stole (x,y), wartosc - wskaxnik na karte
-  std::map<TileOnBoard> board;
+  std::map<position, unsigned> board;
   PairOnBoard chosen;
-  GameData* gameData;
+  GameData gameData;
 
 public:
 
@@ -32,16 +32,17 @@ public:
   ~Board();
   
   // dodaje gracza do gry
-  void addPlayer(string name);
+  // 1 - udalo sie dodac, 0 - blad (limit graczy)
+  bool addPlayer(std::string name);
   
   // usuwa gracza z gry
-  void removePlayer(string name);
+  void removePlayer(int ID);
 
   // zwraca karte z danego polozenia
   Tile* getTile(Position position);
 
   // wybranie karty przez gracza
-  bool choose(Position position, );
+  bool choose(Position position);
 
   // usuniecie pary z planszy (po wytypowaniu pary)
   bool removePair(PairOnBoard* pairToRemove);
@@ -52,7 +53,11 @@ public:
 
   void endGame();
 
-  
+  void clearBoard();
+
+  void clearPlayers();
+
+  int playersNumber();
 
   
   
