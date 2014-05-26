@@ -32,11 +32,28 @@ bool Board::addPlayer(std::string name)
   if(playersNumber() >= MAX_PLAYERS)
     return false;
   Player* newPlayer = new Player(name, playersNumber());
-  players.push_back(newPlayer);
+  players.push_back(newPlayer&);
   return true;
 }
 
-void Board::removePlayer(int ID)
+Tile* Board::getTile(Position position)
 {
-  Player deletedPlater = players.pop_back();
+  return board.find(position);
 }
+
+bool Board::choose(Position position)
+{
+  if(gameData.state == START)
+    {
+      firstPicked = board.find(position);
+      gameData.state = PICKED_FIRST;
+      return true;
+    }
+  if(gameData.state == PICKED_FIRST)
+    {
+      secondPicked = board.find(position);
+      gameData.state = PICKED_SECOND;
+      return true;
+    }
+}
+

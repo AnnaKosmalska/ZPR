@@ -8,19 +8,17 @@
 class Board
 {
 private:
-  Board();
-
-  
+  Board();  
   // lista graczy grajacych na danej planszy
   std::vector<Player> players;
   // zbior kart lezacych na stole; jezeli null - karta zostala zabrana
   // klucz - pozycja na stole (x,y), wartosc - wskaxnik na karte
   std::map<position, unsigned> board;
-  PairOnBoard chosen;
+  Tile firstPicked;
+  Tile secondPicked;
   GameData gameData;
 
 public:
-
   struct GameData
   {
     // stan gry
@@ -34,9 +32,6 @@ public:
   // dodaje gracza do gry
   // 1 - udalo sie dodac, 0 - blad (limit graczy)
   bool addPlayer(std::string name);
-  
-  // usuwa gracza z gry
-  void removePlayer(int ID);
 
   // zwraca karte z danego polozenia
   Tile* getTile(Position position);
