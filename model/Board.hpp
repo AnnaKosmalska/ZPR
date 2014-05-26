@@ -17,6 +17,7 @@ private:
   Tile firstPicked;
   Tile secondPicked;
   GameData gameData;
+  int size;
 
 public:
   struct GameData
@@ -34,15 +35,15 @@ public:
   bool addPlayer(std::string name);
 
   // zwraca karte z danego polozenia
-  Tile* getTile(Position position);
+  unsigned getTile(Position position);
 
   // wybranie karty przez gracza
   bool choose(Position position);
 
   // usuniecie pary z planszy (po wytypowaniu pary)
-  bool removePair(PairOnBoard* pairToRemove);
+  void removePair(PairOnBoard pairToRemove);
 
-  static Game& getInstance();
+  static Board& getInstance();
 
   void startGame();
 
@@ -53,6 +54,8 @@ public:
   void clearPlayers();
 
   int playersNumber();
+
+  void initBoard(int sizeOfBoard);
 
   
   
