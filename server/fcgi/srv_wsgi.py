@@ -2,8 +2,25 @@
 
 import cgi
 import string
+#zapytac Anie o plik do pobierania uzytkownikow
 
 def wsgisrv(environ, start_response):
+	start_response('200 OK,[('Content-Type', 'text/plain')]')
+	#tworzymy struktre danych
+	form=cgi.FieldStorage(
+		fp=environ['wsgi.input'], #nie uzywamy GET
+		environ=environ,
+		keep_blank_values=True)
+
+#tutaj bedzie pobieranie z pol i dodawanie uzytkownikow
+	
+	user = form.getvalue('pole_user')
+	userlist.add(user)
+
+#TODO: dodac czytanie z htmla i wypelnianie htmla userem
+
+
+#--------------------------------------------------------------
 #wrzucone z tuoriala, niekoniecznie działa:
    # Sorting and stringifying the environment key, value pairs
    response_body = ['%s: %s' % (key, value)
