@@ -11,7 +11,7 @@ def beg():
 
     from path import srv_wsgi
 
-    mothership = App()
+    motherapp = App()
 
 #hendler requestow
 
@@ -22,4 +22,10 @@ class App(object):
         self.root = None
     
     def __call__(self, environ, start_response):
-        path #costam costam
+
+        start_response('404 NOT FOUND', [('Content-Type', 'text/plain')])
+        return ['Not Found']
+
+
+motherapp = init()
+
