@@ -11,11 +11,11 @@ def beg():
 
     from path import srv_wsgi
 
-    
+    mothership = App()
 
 #hendler requestow
 
-class Application(object):
+class App(object):
 
     def __init__(self):
         #TODO
