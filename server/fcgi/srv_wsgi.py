@@ -13,19 +13,19 @@ def wsgisrv(environ, start_response):
 		environ=environ,
 		keep_blank_values=True)
 
-#tutaj bedzie pobieranie z pol i dodawanie uzytkownikow
+#tutaj bedzie pobieranie z pol struktury i dodawanie uzytkownikow
 	
 	user = form.getvalue('pole_user')
 
 #odwoluje sie do board.cpp
 	Board.addPlayer(user)
 
-#TODO: dodac czytanie z htmla i wypelnianie htmla userem
-f = open(mainpage.html)
-hpage = string.Template( f.read() )
-f.close()
+#czytanie z htmla i wypelnianie htmla userem
+	f = open(mainpage.html)
+	hpage = string.Template( f.read() )
+	f.close()
 
-result = hpage.safe_substitute(username=user)
+	result = hpage.safe_substitute(username=user)
 
-return result
+	return result
 
