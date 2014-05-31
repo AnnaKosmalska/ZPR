@@ -5,10 +5,6 @@
 #ifndef TILE
 #define TILE
 
-typedef std::pair<unsigned, unsigned> Position;
-typedef std::pair<Position, unsigned> TileOnBoard;
-typedef std::pair<Position, Position> PairOnBoard;
-
 class Tile
 {
 private:
@@ -17,10 +13,11 @@ private:
 
 public:
 
+  Tile();
   Tile(int ID);
   ~Tile();
-  int getID();
-  bool operator=(const Tile& tile) const;
-}
+  int getID() const;
+  bool operator==(const Tile& tile) const;
+};
 
 #endif

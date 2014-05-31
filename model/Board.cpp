@@ -1,9 +1,11 @@
 
 #include "Board.hpp"
-#inlcude "Constants.hpp"
+#include "Constants.hpp"
+#include <boost/random.hpp>
 
 Board::Board()
 {
+  initBoard();
   gameData.state = 0;
   gameData.currentPlayer = 0;
 }
@@ -14,14 +16,14 @@ Board::~Board()
   clearPlayers();
 }
 
-Board::clearBoard()
+void Board::clearBoard()
 {
   gameData.state = 0;
   gameData.currentPlayer = 0;
   board.clear();
 }
 
-Board::clearPlayers()
+void Board::clearPlayers()
 {
   gameData.currentPlayer = 0;
   players.clear();
@@ -35,22 +37,23 @@ bool Board::addPlayer(std::string name)
   return true;
 }
 
-unsigned Board::getTile(Position position)
+int Board::getTile(int x, int y) const
 {
-  return board[position];
+  return board.at(std::pair<int, int>(x,y));
 }
 
-bool Board::choose(Position position)
+bool Board::choose(int player, int x, int y)
 {
+  gameData.currentPlayer = player;
   if(gameData.state == START)
     {
-      firstPicked = board.find(position);
+      firstPicked = board[std::pair<int, int>(x,y)];
       gameData.state = PICKED_FIRST;
       return true;
     }
   if(gameData.state == PICKED_FIRST)
     {
-      secondPicked = board.find(position);
+      secondPicked = board[std::pair<int, int>(x,y)];
       gameData.state = PICKED_SECOND;
       return true;
     }
@@ -58,23 +61,19 @@ bool Board::choose(Position position)
     {
       return false;
     }
+  return false;
 }
 
-void Board::removePair(PairOnBoard pairToRemove)
+void Board::removePair()
 {
-  board.erase(pairToRemove.first);
-  board.erase(pairToRemove.second);
+  ///TODO
 }
 
-static &Board Board::getInstance()
-{
-  static Board instance;
-  return instance;
-}
+
 
 void Board::startGame()
 {
-  initBoard(size);
+  initBoard();
 }
 
 void Board::endGame()
@@ -83,6 +82,7 @@ void Board::endGame()
   clearBoard();
   gameData.state = 3;
   gameData.currentPlayer = 0;
+  size = 10;
 }
 
 int Board::playersNumber()
@@ -90,20 +90,49 @@ int Board::playersNumber()
   return players.size();
 }
 
-void initBoard(int sizeOfBoard)
+void Board::initBoard()
 {
-  Tile newTile;
-  for(unsigned i = 0; i < size; i++)
+
+  
+  std::vector<int> tiles;
+  int fullSize = size*size;
+  for(int i = 0; i < fullSize; ++i)
     {
-      for(unsigned j = 0; j < size; j++)
+      tiles.push_back(i);
+    }
+  
+  for(int i = 0; i < size; ++i)
+    {
+      for(int j = 0; j < size; ++j)
 	{
-	  newTile = randomTile();
-	  board.insert(std::pair<position, unsigned>(std::pair<unsigned, unsigned>(i, j)));
+	  int pickedIndex = randomTile(fullSize);
+	  std::pair<int,int> position;
+	  position = std::make_pair(i, j);
+	  board.insert(std::pair<std::pair<int,int>, int>(position, tiles[pickedIndex]));
+	  tiles[pickedIndex] = tiles[fullSize];
+	  --fullSize;	  
 	}
     }
 }
 
-void Board::randomTile()
+int Board::randomTile(int range)
 {
-  //tu trzeba losować z talii kolejną kartę, najlepiej chyba z listy, bo łatwo przepiąć wskaźniki
+  /* boost::mt19937 generator(static_cast<int>(std::time(0)));
+  boost::random::uniform_int_distribution<> distance(0, range-1);
+  return randRange(randTileGen);*/
+  return 1;
 }
+
+bool Board::checkPair(int player)
+{
+  if(gameData.state == PICKED_SECOND)
+    {
+      gameData.state = END;
+      if(firstPicked == secondPicked)
+	return true;
+    }
+  return false;
+}
+
+
+

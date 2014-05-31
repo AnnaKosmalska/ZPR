@@ -5,7 +5,8 @@
 #ifndef DECK
 #define DECK
 
-#include <Tile.hpp>
+#include "Tile.hpp"
+#include <vector>
 
 class Deck
 {
@@ -19,11 +20,11 @@ public:
   // destruktor
   ~Deck();
   // dodanie karty do talii
-  void addTile(Tile* tile);
+  void addTile(int newTile);
   // liczba zdobytych par
-  int getNumber();
+  int getNumber() const;
   //
-  std::vector<Tile*> getTiles() const;
-}
+  std::vector<int> getTiles() const;
+};
 
-#endif DECK
+#endif

@@ -1,6 +1,6 @@
 
 
-#include <Deck.hpp>
+#include "Deck.hpp"
 
 Deck::Deck()
 {
@@ -10,22 +10,22 @@ Deck::Deck()
 Deck::~Deck()
 {}
 
-void Deck::addTile(Tile* tile)
+void Deck::addTile(int newTile)
 {
-  deck.push_back(tile);
+  deck.push_back(Tile(newTile));
 }
 
-int Deck::getNumber()
+int Deck::getNumber() const
 {
   return deck.size();
 }
 
-std::vector<Tile*> Deck::getTiles() const
+std::vector<int> Deck::getTiles() const
 {
-  std::vector<Tile*> tiles;
-  for(std::vector<Tile*>::const_iterator it = deck.begin(); it != deck.end(); ++it)
+  std::vector<int> tiles;
+  for(int i = 0; i < getNumber(); ++i)
     {
-      tiles.push_back(*it);
+      tiles.push_back(deck[i].getID());
     }
   return tiles;
 }

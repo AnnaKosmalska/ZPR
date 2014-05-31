@@ -8,7 +8,7 @@ def copyLibBuilder( target, source, env):
    '''kopiuje biblioteke'''
    shutil.copy( str(source[0]), str(target[0]) )
    return
-env = Environment()
+env = Environment(CPPPATH='model')
 
 #sciezki
 env.Append( ENV = {'PATH' : os.environ['PATH'] })
@@ -34,9 +34,9 @@ else:
    print platform.system() + " not supported"
 
 #build C++ library
-cpplib = env.SharedLibrary( target = 'hello', source = ['calculation/hello.cpp'])
+cpplib = env.SharedLibrary( target = 'model', source = [Glob('model/*.cpp')])
 if(platform.system() == "Linux"):
-   target = 'calculation/hello.so'
+   target = 'model/model.so'
 elif(platform.system() == "Windows"):
-   target = 'calculation/hello.pyd'
+   target = 'model/model.pyd'
 env.Command(target, cpplib, copyLibBuilder )

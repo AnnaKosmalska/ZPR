@@ -2,22 +2,27 @@
    implementacja klasy Tile
 */
 
-#include <Tile.hpp>
+#include "Tile.hpp"
 
-Tile::Tile(int ID)
+Tile::Tile()
 {
-  this.ID = ID;
+  ID = 0;
+}
+
+Tile::Tile(int _ID)
+{
+  ID = _ID;
 }
 
 Tile::~Tile()
 {}
 
-int Tile::getID()
+int Tile::getID() const
 {
   return ID;
 }
 
-bool Tile::operator=(const Tile& tile) const
+bool Tile::operator==(const Tile& tile) const
 {
   return getID() == tile.getID();
 }

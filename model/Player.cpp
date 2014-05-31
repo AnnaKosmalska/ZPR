@@ -1,11 +1,11 @@
 
 #include "Player.hpp"
 
-Player::Player(string name, int ID)
+Player::Player(std::string _name, int _ID)
 {
-  this.name = name;
-  this.ID = ID;
-  this. score = 0;
+  name = _name;
+  ID = _ID;
+  score = 0;
 }
 
 Player::~Player()
@@ -18,27 +18,28 @@ void Player::incScore(int points)
   score += points;
 }
 
-void Player::addToDeck(Tile* pair)
+void Player::addToDeck(int newTile)
 {
-  deck.addTile(pair);
+  deck->addTile(newTile);
 }
 
-string Player::getName()
+std::string Player::getName() const
 {
   return name;
 }
 
-int Player::getID()
+int Player::getID() const
 {
   return ID;
 }
 
-Deck* Player::getDeck()
+Deck* Player::getDeck() const
 {
   return deck;
 }
 
-int Player::getScore(){
+int Player::getScore() const
+{
   return score;
 }
 

@@ -2,13 +2,14 @@
 #ifndef PLAYER
 #define PLAYER
 
-#include <Deck.hpp>
+#include <string>
+#include "Deck.hpp"
 
 class Player
 {
 private:
   
-  string name;
+  std::string name;
   int ID;
   int score;
   Deck* deck;
@@ -17,14 +18,14 @@ private:
 
 public:
   
-  Player(string name, int ID);
+  Player(std::string name, int ID);
   ~Player();
-  void addToDeck(Tile* pair);
-  string getName();
-  int getID();
-  Deck* getDeck();
-  int getScore();
+  void addToDeck(int newTile);
+  std::string getName() const;
+  int getID() const;
+  Deck* getDeck() const;
+  int getScore() const;
   
-}
+};
 
 #endif
