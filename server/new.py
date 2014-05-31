@@ -6,7 +6,7 @@ import os
 import sys
 import json
 import os
-import calculation
+import model
 
 class App(object):
 #sprawdzamy pakiet, pobieramy dlugosc
@@ -23,6 +23,27 @@ class App(object):
 	user = orders["user"]
 	function = order["function"]
 	parameters = order["parameters"]
+
+#funkcje
+	if function == "addPlayer"
+		x = getattr(model, addPlayer)(parameters)
+	#boost::python::def("addPlayer", addPlayer);
+
+	if function == "choose"
+		x = getattr(model, choose)(user, parameters[0], parameters[1])	
+	#boost::python::def("choose", choose);
+
+	if function == "startGame"
+		x = getattr(model, startGame)()
+  	#boost::python::def("startGame", startGame);
+
+	if function == "endGame"
+		x = getattr(model, endGame)()
+  	#boost::python::def("endGame", endGame);
+
+	if function == "checkPair"
+		x = getattr(model, checkPair)(user)
+  	#boost::python::def("checkPair", checkPair);
 
 
 #odpowiadanie
