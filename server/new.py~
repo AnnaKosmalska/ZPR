@@ -6,7 +6,6 @@ import os
 import sys
 import json
 import os
-import calculation
 
 class App(object):
 #sprawdzamy pakiet, pobieramy dlugosc
@@ -20,9 +19,7 @@ class App(object):
 	orders = json.loads(packet)
 
 #dodac wybieranie z jsona informacji, obsluga modelu
-	user = orders["user"]
-	function = order["function"]
-	parameters = order["parameters"]
+
 
 
 #odpowiadanie
