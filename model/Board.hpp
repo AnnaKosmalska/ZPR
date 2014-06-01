@@ -28,7 +28,8 @@ private:
   Tile firstPicked;
   Tile secondPicked;
   GameData gameData;
-  int size;
+  int sizeX;
+  int sizeY;
 
   Board();
   
@@ -54,8 +55,8 @@ public:
   ~Board();
   
   // dodaje gracza do gry
-  // 1 - udalo sie dodac, 0 - blad (limit graczy)
-  bool addPlayer(std::string name);
+  // zwraca id gracza lub -1 jesli blad
+  int addPlayer(std::string name);
   
   static Board& getInstance()
   {
@@ -65,7 +66,7 @@ public:
    // wybranie karty przez gracza
   bool choose(int player, int x, int y);
 
-  void startGame();
+  void startGame(int x, int y);
 
   void endGame();
 
@@ -73,7 +74,7 @@ public:
   
 };
 
-bool addPlayer(std::string name)
+int addPlayer(std::string name)
 {
   return Board::getInstance().addPlayer(name);
 }
@@ -81,9 +82,9 @@ bool choose(int player, int x, int y)
 {
   return Board::getInstance().choose(player, x, y);
 }
-void startGame()
+void startGame(int x, int y)
 {
-  Board::getInstance().startGame();
+  Board::getInstance().startGame(x, y);
 }
 void endGame()
 {

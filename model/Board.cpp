@@ -5,7 +5,8 @@
 
 Board::Board()
 {
-  initBoard();
+  sizeX = 5;
+  sizeY = 5;
   gameData.state = 0;
   gameData.currentPlayer = 0;
 }
@@ -29,12 +30,12 @@ void Board::clearPlayers()
   players.clear();
 }
 
-bool Board::addPlayer(std::string name)
+int Board::addPlayer(std::string name)
 {
   if(playersNumber() >= MAX_PLAYERS)
-    return false;
+    return ERR_MAX_PLAYERS;
   players.push_back(Player(name, playersNumber()));
-  return true;
+  return (playersNumber()-1);
 }
 
 int Board::getTile(int x, int y) const
@@ -71,8 +72,12 @@ void Board::removePair()
 
 
 
-void Board::startGame()
+void Board::startGame(int x, int y)
 {
+  if((x*y)%2)
+    ++x;
+  sizeX = x;
+  sizeY = y;
   initBoard();
 }
 
@@ -82,7 +87,6 @@ void Board::endGame()
   clearBoard();
   gameData.state = 3;
   gameData.currentPlayer = 0;
-  size = 10;
 }
 
 int Board::playersNumber()
@@ -92,18 +96,18 @@ int Board::playersNumber()
 
 void Board::initBoard()
 {
-
   
   std::vector<int> tiles;
-  int fullSize = size*size;
-  for(int i = 0; i < fullSize; ++i)
+  int fullSize = sizeX*sizeY;
+  for(int i = 0; i < fullSize; i+=2)
     {
+      tiles.push_back(i);
       tiles.push_back(i);
     }
   
-  for(int i = 0; i < size; ++i)
+  for(int i = 0; i < sizeX; ++i)
     {
-      for(int j = 0; j < size; ++j)
+      for(int j = 0; j < sizeY; ++j)
 	{
 	  int pickedIndex = randomTile(fullSize);
 	  std::pair<int,int> position;
