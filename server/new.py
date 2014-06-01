@@ -47,7 +47,7 @@ def App(environ, start_response):
 
 	if function == "funkcja"
 		x = dict()
-		x['atrybut'] = ""|0|[]|{}
+		x['atrybut'] = 0
 
 
 #odpowiadanie
