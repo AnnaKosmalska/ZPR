@@ -26,24 +26,28 @@ def App(environ, start_response):
 
 #funkcje
 	if function == "addPlayer":
-		x = getattr(model, addPlayer)(parameters)
+		x = model.addPlayer(parameters)
 	#boost::python::def("addPlayer", addPlayer);
 
 	if function == "choose":
-		x = getattr(model, choose)(user, parameters[0], parameters[1])	
+		x = model.choose(user, parameters[0], parameters[1])	
 	#boost::python::def("choose", choose);
 
 	if function == "startGame":
-		x = getattr(model, startGame)()
+		x = mode.startGame()
   	#boost::python::def("startGame", startGame);
 
 	if function == "endGame":
-		x = getattr(model, endGame)()
+		x = model.endGame()
   	#boost::python::def("endGame", endGame);
 
 	if function == "checkPair":
-		x = getattr(model, checkPair)(user)
+		x = model.checkPair(user)
   	#boost::python::def("checkPair", checkPair);
+
+	if function == "funkcja"
+		x = dict()
+		x['atrybut'] = ""|0|[]|{}
 
 
 #odpowiadanie
