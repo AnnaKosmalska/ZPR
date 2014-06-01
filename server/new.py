@@ -21,8 +21,8 @@ def App(environ, start_response):
 
 #dodac wybieranie z jsona informacji, obsluga modelu
 	user = orders["user"]
-	function = order["function"]
-	parameters = order["parameters"]
+	function = orders["function"]
+	parameters = orders["parameters"]
 
 #funkcje
 	if function == "addPlayer":
@@ -45,10 +45,11 @@ def App(environ, start_response):
 		x = model.checkPair(user)
   	#boost::python::def("checkPair", checkPair);
 
-	if function == "funkcja"
-		x = dict()
-		x['atrybut'] = 0
-
+	if function == "funkcja":
+		#x = dict(one=[1, 2, 3], two=[2, 3, 3], three=[3, 2, 1])
+		#x['atrybut'] = 0
+		#x['atrybut'] = [1, 2, 3, 4, 5]
+		x = dict(picture="nerd.png")
 
 #odpowiadanie
 	ret_packet = json.dump(x)
