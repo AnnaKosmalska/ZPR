@@ -8,7 +8,7 @@ import json
 import os
 import model
 
-class App(object):
+def App(environ, start_response):
 #sprawdzamy pakiet, pobieramy dlugosc
 	try:
 		packet_leng = int(environ.get('CONTENT_LENGTH', 0))
@@ -25,23 +25,23 @@ class App(object):
 	parameters = order["parameters"]
 
 #funkcje
-	if function == "addPlayer"
+	if function == "addPlayer":
 		x = getattr(model, addPlayer)(parameters)
 	#boost::python::def("addPlayer", addPlayer);
 
-	if function == "choose"
+	if function == "choose":
 		x = getattr(model, choose)(user, parameters[0], parameters[1])	
 	#boost::python::def("choose", choose);
 
-	if function == "startGame"
+	if function == "startGame":
 		x = getattr(model, startGame)()
   	#boost::python::def("startGame", startGame);
 
-	if function == "endGame"
+	if function == "endGame":
 		x = getattr(model, endGame)()
   	#boost::python::def("endGame", endGame);
 
-	if function == "checkPair"
+	if function == "checkPair":
 		x = getattr(model, checkPair)(user)
   	#boost::python::def("checkPair", checkPair);
 
