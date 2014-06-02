@@ -8,7 +8,6 @@
 class Player
 {
 private:
-  
   std::string name;
   int ID;
   int score;
@@ -21,7 +20,6 @@ public:
   Player(std::string name, int ID);
   ~Player();
   void addToDeck(int newTile);
-  std::string getName() const;
   int getID() const;
   Deck* getDeck() const;
   int getScore() const;
