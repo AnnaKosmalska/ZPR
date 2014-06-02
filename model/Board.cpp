@@ -1,14 +1,15 @@
 
 #include "Board.hpp"
-#include "Constants.hpp"
 #include <boost/random.hpp>
 
 Board::Board()
 {
   sizeX = 5;
   sizeY = 5;
-  gameData.state = 0;
-  gameData.currentPlayer = 0;
+  state = 0;
+  firstPicked = -1;
+  secondPicked = -1;
+  currentPlayer = 0;
 }
 
 Board::~Board()
@@ -19,23 +20,24 @@ Board::~Board()
 
 void Board::clearBoard()
 {
-  gameData.state = 0;
-  gameData.currentPlayer = 0;
+  state = 0;
+  currentPlayer = 0;
   board.clear();
 }
 
 void Board::clearPlayers()
 {
-  gameData.currentPlayer = 0;
+  currentPlayer = 0;
   players.clear();
 }
 
-int Board::addPlayer(std::string name)
+int Board::addPlayer()
 {
   if(playersNumber() >= MAX_PLAYERS)
     return ERR_MAX_PLAYERS;
-  players.push_back(Player(name, playersNumber()));
-  return (playersNumber()-1);
+  int id = playersNumber()+1;
+  players.push_back(Player("Ania", id));
+  return id;
 }
 
 int Board::getTile(int x, int y) const
@@ -43,26 +45,37 @@ int Board::getTile(int x, int y) const
   return board.at(std::pair<int, int>(x,y));
 }
 
-bool Board::choose(int player, int x, int y)
+int Board::choose(int player, int x, int y)
 {
-  gameData.currentPlayer = player;
-  if(gameData.state == START)
+  /*if(currentPlayer != player-1)
+    return ERR_CURRENT_PLAYER;*/
+  
+  if(firstPicked == -1)
     {
-      firstPicked = board[std::pair<int, int>(x,y)];
-      gameData.state = PICKED_FIRST;
-      return true;
+      firstPicked = getTile(x, y);
+      return firstPicked;
     }
-  if(gameData.state == PICKED_FIRST)
+  if(secondPicked == -1)
     {
-      secondPicked = board[std::pair<int, int>(x,y)];
-      gameData.state = PICKED_SECOND;
-      return true;
-    }
-  if(gameData.state == PICKED_SECOND || gameData.state == END)
-    {
-      return false;
-    }
-  return false;
+      secondPicked = getTile(x,y);
+      
+      if(secondPicked == firstPicked)
+	players[currentPlayer].incScore(1);
+      firstPicked = -1;
+      int ret = secondPicked;
+      secondPicked = -1;
+      currentPlayer = nextPlayer();
+      return ret;
+    }  
+  return ERR_CANNOT_CHOOSE;
+}
+
+int Board::nextPlayer()
+{
+  int ret =  currentPlayer+1;
+  if(ret > playersNumber())
+    ret = 0;
+  return ret;
 }
 
 void Board::removePair()
@@ -71,22 +84,24 @@ void Board::removePair()
 }
 
 
-
-void Board::startGame(int x, int y)
+bool Board::initGame(int player, int x, int y)
 {
+  if(player != 1)
+    return false;
   if((x*y)%2)
     ++x;
   sizeX = x;
   sizeY = y;
   initBoard();
+  return 1;
 }
 
 void Board::endGame()
 {
   clearPlayers();
   clearBoard();
-  gameData.state = 3;
-  gameData.currentPlayer = 0;
+  state = 3;
+  currentPlayer = 0;
 }
 
 int Board::playersNumber()
@@ -127,16 +142,12 @@ int Board::randomTile(int range)
   return 1;
 }
 
-bool Board::checkPair(int player)
+int Board::playerReady(int player, int decision)
 {
-  if(gameData.state == PICKED_SECOND)
-    {
-      gameData.state = END;
-      if(firstPicked == secondPicked)
-	return true;
-    }
-  return false;
+  if(decision == false)
+    return -1;
+    //TODO deleteplayer
+  if(decision == true)
+    return 1;
+  return 0;
 }
-
-
-

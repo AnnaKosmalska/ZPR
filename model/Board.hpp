@@ -3,21 +3,13 @@
 
 #include "Player.hpp"
 #include "Tile.hpp"
+#include "Constants.hpp"
 #include <map>
 #include <boost/python.hpp>
 
 
 class Board
-{
-public:
-  struct GameData
-  {
-    // stan gry
-    int state;
-
-    int currentPlayer;
-  };
-  
+{ 
 private:
     
   // lista graczy grajacych na danej planszy
@@ -25,9 +17,12 @@ private:
   // zbior kart lezacych na stole; jezeli null - karta zostala zabrana
   // klucz - pozycja na stole (x,y), wartosc - wskaxnik na karte
   std::map<std::pair<int, int>, int> board;
-  Tile firstPicked;
-  Tile secondPicked;
-  GameData gameData;
+  int firstPicked;
+  int secondPicked;
+
+  int state;
+  int currentPlayer;
+  
   int sizeX;
   int sizeY;
 
@@ -49,6 +44,7 @@ private:
   // zwraca karte z danego polozenia
   int getTile(int x, int y) const;
 
+  int nextPlayer();
 
 public: 
   
@@ -56,7 +52,7 @@ public:
   
   // dodaje gracza do gry
   // zwraca id gracza lub -1 jesli blad
-  int addPlayer(std::string name);
+  int addPlayer();
   
   static Board& getInstance()
   {
@@ -64,35 +60,77 @@ public:
     return instance;
   }  
    // wybranie karty przez gracza
-  bool choose(int player, int x, int y);
+  int choose(int player, int x, int y);
 
-  void startGame(int x, int y);
+  bool initGame(int player, int x, int y);
 
   void endGame();
 
-  bool checkPair(int player);
+  int getScore(int player)
+  {
+    return players[player-1].getScore();
+  }
+  int getState()
+  {
+    return state;
+  }
+  int getCurrentPlayer()
+  {
+    return currentPlayer;
+  }
+  int getFirst()
+  {
+    return firstPicked;
+  }
+  int getSecond()
+  {
+    return secondPicked;
+  }
+
+  int playerReady(int player, int decision);
   
 };
 
-int addPlayer(std::string name)
+int playerReady(int player, int decision)
 {
-  return Board::getInstance().addPlayer(name);
+  return Board::getInstance().playerReady(player, decision);
 }
-bool choose(int player, int x, int y)
+
+int addPlayer()
+{
+  return Board::getInstance().addPlayer();
+}
+int choose(int player, int x, int y)
 {
   return Board::getInstance().choose(player, x, y);
 }
-void startGame(int x, int y)
+bool initGame(int player, int x, int y)
 {
-  Board::getInstance().startGame(x, y);
+  return Board::getInstance().initGame(player, x, y);
 }
 void endGame()
 {
   Board::getInstance().endGame();
 }
-bool checkPair(int player)
+int getScore(int player)
 {
-  return Board::getInstance().checkPair(player);
+  return Board::getInstance().getScore(player);
+}
+int getState()
+{
+  return Board::getInstance().getState();
+}
+int getCurrentPlayer()
+{
+  return Board::getInstance().getCurrentPlayer();
+}
+int getFirst()
+{
+  return Board::getInstance().getFirst();
+}
+int getSecond()
+{
+  return Board::getInstance().getSecond();
 }
 
 
@@ -100,9 +138,14 @@ BOOST_PYTHON_MODULE(model)
 {
   boost::python::def("addPlayer", addPlayer);
   boost::python::def("choose", choose);
-  boost::python::def("startGame", startGame);
+  boost::python::def("initGame", initGame);
   boost::python::def("endGame", endGame);
-  boost::python::def("checkPair", checkPair);
+  boost::python::def("getScore", getScore);
+  boost::python::def("getCurrentPlayer", getCurrentPlayer);
+  boost::python::def("getState", getState);
+  boost::python::def("getFirst", getFirst);
+  boost::python::def("getSecond", getSecond);
 }
+
 
 #endif

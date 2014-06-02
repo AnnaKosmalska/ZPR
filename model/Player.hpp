@@ -14,7 +14,7 @@ private:
   int score;
   Deck* deck;
 
-  void incScore(int points);
+  
 
 public:
   
@@ -25,6 +25,7 @@ public:
   int getID() const;
   Deck* getDeck() const;
   int getScore() const;
+  void incScore(int points);
   
 };
 
