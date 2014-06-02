@@ -23,10 +23,6 @@ void Player::addToDeck(int newTile)
   deck->addTile(newTile);
 }
 
-std::string Player::getName() const
-{
-  return name;
-}
 
 int Player::getID() const
 {
