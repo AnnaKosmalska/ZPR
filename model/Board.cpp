@@ -6,6 +6,7 @@ Board::Board()
 {
   sizeX = 5;
   sizeY = 5;
+  initBoard();
   state = 0;
   firstPicked = -1;
   secondPicked = -1;
@@ -35,9 +36,9 @@ int Board::addPlayer()
 {
   if(playersNumber() >= MAX_PLAYERS)
     return ERR_MAX_PLAYERS;
-  int id = playersNumber()+1;
-  players.push_back(Player("Ania", id));
-  return id;
+  std::string newName = "Ania";
+  players.push_back(Player(newName, playersNumber()));
+  return playersNumber();
 }
 
 int Board::getTile(int x, int y) const
@@ -113,13 +114,13 @@ void Board::initBoard()
 {
   
   std::vector<int> tiles;
-  int fullSize = sizeX*sizeY;
-  for(int i = 0; i < fullSize; i+=2)
+  int fullSize = sizeX*sizeY/2;
+  for(int i = 0; i < fullSize; ++i)
     {
       tiles.push_back(i);
       tiles.push_back(i);
     }
-  
+  fullSize*=2;
   for(int i = 0; i < sizeX; ++i)
     {
       for(int j = 0; j < sizeY; ++j)
@@ -128,8 +129,7 @@ void Board::initBoard()
 	  std::pair<int,int> position;
 	  position = std::make_pair(i, j);
 	  board.insert(std::pair<std::pair<int,int>, int>(position, tiles[pickedIndex]));
-	  tiles[pickedIndex] = tiles[fullSize];
-	  --fullSize;	  
+	  tiles[pickedIndex] = tiles[--fullSize];	  
 	}
     }
 }

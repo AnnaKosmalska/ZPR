@@ -1,0 +1,6 @@
+Model się kompiluje na Linuxie (scons z folderu ZPR).
+Funkcje dostępne z zewnątrz: te, które w Board.hpp są dostępne w BOOST_PYTHON_MODULE{...}.
+Pozostało dopisać pliki .py wywołujące wyżej wspomniane funkcje.
+Pytanie - zrobić to tak, aby dla każdej funkcji był osobny plik .py (możliwe, bo będzie ich niewiele)
+LUB
+zrobić jeden plik, który jako jeden z argumentów przyjmuje nazwę funkcji.
