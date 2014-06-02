@@ -19,7 +19,11 @@ private:
   // klucz - pozycja na stole (x,y), wartosc - wskaxnik na karte
   std::map<std::pair<int, int>, int> board;
   int firstPicked;
+  int firstX;
+  int firstY;
   int secondPicked;
+  int secondX;
+  int secondY;
   int sizeX;
   int sizeY;
 
@@ -70,6 +74,10 @@ public:
   int getCurrentPlayer()
   {
     return currentPlayer;
+  }
+  int getState()
+  {
+    return state;
   }
   
 };
