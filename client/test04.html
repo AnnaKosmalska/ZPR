@@ -13,8 +13,8 @@ IMG { height: 50px; width: 50px }
 <script type="text/javascript" src="jquery-1.11.0.js"></script>
 <script>
 // ustawiane na wejsciu
-var tableWidth=10;
-var tableHeight=10;
+var tableWidth=4;
+var tableHeight=4;
 
 // dostaje od serwera
 var userId = 0;
@@ -41,16 +41,16 @@ function start(){
 		parameters: [],
 	};
 	
-	$.post(address, JSON.stringify(dane), function(data){userId = data.id;});
+	//$.post(address, JSON.stringify(dane), function(data){userId = data.id;});
 	
 }
 
 
 setInterval(function(){
-	//var address = "../server/new.py";
+	var address = "../server/new.py";
 	var coTam= {
 		user: 0,
-		"function": "ping",
+		"function": "wattsUp",
 		parameters: [],
 	};
 	
@@ -170,8 +170,8 @@ function makeTable()
 
 
 
-//start();
-//playerReady = confirm("Jestes gotowy?");
+start();
+playerReady = confirm("Jestes gotowy?");
 //while(gameStarted == 0)
 //{
 	//zapytaj o liste graczy i czy juz sie zaczelo
