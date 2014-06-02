@@ -9,25 +9,7 @@
 
 
 class Board
-{
-public:
-  struct GameData
-  {
-    // stan gry
-    int state;
-    //punktacja graczy
-    int player1Score;
-    int player2Score;
-    int player3Score;
-    int player4Score;
-    //odkryte klocki
-    int pickedFirst;
-    int pickedSecond;
-    // akktualny gracz
-    int currentPlayer;
-  };
-  GameData gameData;
-  
+{ 
 private:
     
   // lista graczy grajacych na danej planszy
@@ -37,6 +19,9 @@ private:
   std::map<std::pair<int, int>, int> board;
   int firstPicked;
   int secondPicked;
+
+  int state;
+  int currentPlayer;
   
   int sizeX;
   int sizeY;
@@ -59,6 +44,7 @@ private:
   // zwraca karte z danego polozenia
   int getTile(int x, int y) const;
 
+  int nextPlayer();
 
 public: 
   
@@ -80,7 +66,26 @@ public:
 
   void endGame();
 
-  GameData getGameData() const;
+  int getScore(int player)
+  {
+    return players[player-1].getScore();
+  }
+  int getState()
+  {
+    return state;
+  }
+  int getCurrentPlayer()
+  {
+    return currentPlayer;
+  }
+  int getFirst()
+  {
+    return firstPicked;
+  }
+  int getSecond()
+  {
+    return secondPicked;
+  }
 
   int playerReady(int player, int decision);
   
@@ -89,11 +94,6 @@ public:
 int playerReady(int player, int decision)
 {
   return Board::getInstance().playerReady(player, decision);
-}
-
-Board::GameData getGameData()
-{
-  return Board::getInstance().getGameData();
 }
 
 int addPlayer(std::string name)
@@ -112,6 +112,26 @@ void endGame()
 {
   Board::getInstance().endGame();
 }
+int getScore(int player)
+{
+  return Board::getInstance().getScore(player);
+}
+int getState()
+{
+  return Board::getInstance().getState();
+}
+int getCurrentPlayer()
+{
+  return Board::getInstance().getCurrentPlayer();
+}
+int getFirst()
+{
+  return Board::getInstance().getFirst();
+}
+int getSecond()
+{
+  return Board::getInstance().getSecond();
+}
 
 
 BOOST_PYTHON_MODULE(model)
@@ -120,6 +140,12 @@ BOOST_PYTHON_MODULE(model)
   boost::python::def("choose", choose);
   boost::python::def("initGame", initGame);
   boost::python::def("endGame", endGame);
+  boost::python::def("getScore", getScore);
+  boost::python::def("getCurrentPlayer", getCurrentPlayer);
+  boost::python::def("getState", getState);
+  boost::python::def("getFirst", getFirst);
+  boost::python::def("getSecond", getSecond);
 }
+
 
 #endif
