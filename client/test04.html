@@ -3,7 +3,7 @@
 <head>
 <title>Memo</title>
 <style>
-IMG { height: 150px; width: 150px }
+IMG { height: 50px; width: 50px }
 </style>
 </head>
 <body style ="background-color: #f0e000">
@@ -13,8 +13,8 @@ IMG { height: 150px; width: 150px }
 <script type="text/javascript" src="jquery-1.11.0.js"></script>
 <script>
 // ustawiane na wejsciu
-var tableWidth=4;
-var tableHeight=4;
+var tableWidth=10;
+var tableHeight=10;
 
 // dostaje od serwera
 var userId = 0;
@@ -27,6 +27,7 @@ var openTilesCount=0;
 var openTiles=[];
 var picturesOpen=[];
 var playerReady=false;
+var address = "../server/new.py";
 
 //var mix = [1, 1, 2, 2, 0, 0, 1, 1, 2, 1, 0, 0, 0, 1, 2, 0];  // przypisanie obrazkow do kafelkow - tego nie bedzie! to bedziemy pobierac na biezaco przy odkrywaniu klockow
 //var pictures = ["nerd.png", "babcia.png", "music.png"];	// same obrazki - moga byc i tu w sumie
@@ -46,7 +47,7 @@ function start(){
 
 
 setInterval(function(){
-	var address = "../server/new.py";
+	//var address = "../server/new.py";
 	var coTam= {
 		user: 0,
 		"function": "ping",
@@ -66,7 +67,7 @@ function checkTilePicture(x, y, td)
 		parameters: [],
 	};
 	
-	var address = "../server/new.py";
+	//var address = "../server/new.py";
 	$.post(address, JSON.stringify(tileInfo), function(data){
 	
 		console.log(data);
