@@ -3,6 +3,7 @@
 
 #include "Player.hpp"
 #include "Tile.hpp"
+#include "Constants.hpp"
 #include <map>
 #include <boost/python.hpp>
 
@@ -14,9 +15,18 @@ public:
   {
     // stan gry
     int state;
-
+    //punktacja graczy
+    int player1Score;
+    int player2Score;
+    int player3Score;
+    int player4Score;
+    //odkryte klocki
+    int pickedFirst;
+    int pickedSecond;
+    // akktualny gracz
     int currentPlayer;
   };
+  GameData gameData;
   
 private:
     
@@ -25,9 +35,9 @@ private:
   // zbior kart lezacych na stole; jezeli null - karta zostala zabrana
   // klucz - pozycja na stole (x,y), wartosc - wskaxnik na karte
   std::map<std::pair<int, int>, int> board;
-  Tile firstPicked;
-  Tile secondPicked;
-  GameData gameData;
+  int firstPicked;
+  int secondPicked;
+  
   int sizeX;
   int sizeY;
 
@@ -64,35 +74,43 @@ public:
     return instance;
   }  
    // wybranie karty przez gracza
-  bool choose(int player, int x, int y);
+  int choose(int player, int x, int y);
 
-  void startGame(int x, int y);
+  bool initGame(int player, int x, int y);
 
   void endGame();
 
-  bool checkPair(int player);
+  GameData getGameData() const;
+
+  int playerReady(int player, int decision);
   
 };
+
+int playerReady(int player, int decision)
+{
+  return Board::getInstance().playerReady(player, decision);
+}
+
+Board::GameData getGameData()
+{
+  return Board::getInstance().getGameData();
+}
 
 int addPlayer(std::string name)
 {
   return Board::getInstance().addPlayer(name);
 }
-bool choose(int player, int x, int y)
+int choose(int player, int x, int y)
 {
   return Board::getInstance().choose(player, x, y);
 }
-void startGame(int x, int y)
+bool initGame(int player, int x, int y)
 {
-  Board::getInstance().startGame(x, y);
+  return Board::getInstance().initGame(player, x, y);
 }
 void endGame()
 {
   Board::getInstance().endGame();
-}
-bool checkPair(int player)
-{
-  return Board::getInstance().checkPair(player);
 }
 
 
@@ -100,9 +118,8 @@ BOOST_PYTHON_MODULE(model)
 {
   boost::python::def("addPlayer", addPlayer);
   boost::python::def("choose", choose);
-  boost::python::def("startGame", startGame);
+  boost::python::def("initGame", initGame);
   boost::python::def("endGame", endGame);
-  boost::python::def("checkPair", checkPair);
 }
 
 #endif

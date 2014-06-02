@@ -1,6 +1,5 @@
 
 #include "Board.hpp"
-#include "Constants.hpp"
 #include <boost/random.hpp>
 
 Board::Board()
@@ -35,7 +34,7 @@ int Board::addPlayer(std::string name)
   if(playersNumber() >= MAX_PLAYERS)
     return ERR_MAX_PLAYERS;
   players.push_back(Player(name, playersNumber()));
-  return (playersNumber()-1);
+  return (playersNumber());
 }
 
 int Board::getTile(int x, int y) const
@@ -43,26 +42,22 @@ int Board::getTile(int x, int y) const
   return board.at(std::pair<int, int>(x,y));
 }
 
-bool Board::choose(int player, int x, int y)
+int Board::choose(int player, int x, int y)
 {
-  gameData.currentPlayer = player;
-  if(gameData.state == START)
+  if(gameData.currentPlayer != player)
+    return ERR_CURRENT_PLAYER;
+  
+  if(firstPicked == -1)
     {
-      firstPicked = board[std::pair<int, int>(x,y)];
-      gameData.state = PICKED_FIRST;
-      return true;
+      firstPicked = getTile(x, y);
+      return firstPicked;
     }
-  if(gameData.state == PICKED_FIRST)
+  if(secondPicked == -1)
     {
-      secondPicked = board[std::pair<int, int>(x,y)];
-      gameData.state = PICKED_SECOND;
-      return true;
-    }
-  if(gameData.state == PICKED_SECOND || gameData.state == END)
-    {
-      return false;
-    }
-  return false;
+      secondPicked = getTile(x,y);
+      return secondPicked;
+    }  
+  return ERR_CANNOT_CHOOSE;
 }
 
 void Board::removePair()
@@ -70,15 +65,19 @@ void Board::removePair()
   ///TODO
 }
 
+Board::GameData Board::getGameData() const
+{
+  return gameData;
+}
 
-
-void Board::startGame(int x, int y)
+bool Board::initGame(int player, int x, int y)
 {
   if((x*y)%2)
     ++x;
   sizeX = x;
   sizeY = y;
   initBoard();
+  return 1;
 }
 
 void Board::endGame()
@@ -127,16 +126,12 @@ int Board::randomTile(int range)
   return 1;
 }
 
-bool Board::checkPair(int player)
+int Board::playerReady(int player, int decision)
 {
-  if(gameData.state == PICKED_SECOND)
-    {
-      gameData.state = END;
-      if(firstPicked == secondPicked)
-	return true;
-    }
-  return false;
+  if(decision == false)
+    return -1;
+    //TODO deleteplayer
+  if(decision == true)
+    return 1;
+  return 0;
 }
-
-
-
