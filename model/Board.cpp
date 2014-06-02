@@ -6,8 +6,8 @@ Board::Board()
 {
   sizeX = 5;
   sizeY = 5;
-  gameData.state = 0;
-  gameData.currentPlayer = 0;
+  state = 0;
+  currentPlayer = 0;
 }
 
 Board::~Board()
@@ -18,14 +18,14 @@ Board::~Board()
 
 void Board::clearBoard()
 {
-  gameData.state = 0;
-  gameData.currentPlayer = 0;
+  state = 0;
+  currentPlayer = 0;
   board.clear();
 }
 
 void Board::clearPlayers()
 {
-  gameData.currentPlayer = 0;
+  currentPlayer = 0;
   players.clear();
 }
 
@@ -44,7 +44,7 @@ int Board::getTile(int x, int y) const
 
 int Board::choose(int player, int x, int y)
 {
-  if(gameData.currentPlayer != player-1)
+  if(currentPlayer != player-1)
     return ERR_CURRENT_PLAYER;
   
   if(firstPicked == -1)
@@ -55,9 +55,9 @@ int Board::choose(int player, int x, int y)
   if(secondPicked == -1)
     {
       secondPicked = getTile(x,y);
-      gameData.currentPlayer = nextPlayer();
+      currentPlayer = nextPlayer();
       if(secondPicked == firstPicked)
-	players[gameData.currentPlayer].incScore(1);
+	players[currentPlayer].incScore(1);
       firstPicked = -1;
       int ret = secondPicked;
       secondPicked = -1;	
@@ -68,7 +68,7 @@ int Board::choose(int player, int x, int y)
 
 int Board::nextPlayer()
 {
-  int ret =  gameData.currentPlayer+1;
+  int ret =  currentPlayer+1;
   if(ret > playersNumber())
     ret = 0;
   return ret;
@@ -79,10 +79,6 @@ void Board::removePair()
   ///TODO
 }
 
-Board::GameData Board::getGameData() const
-{
-  return gameData;
-}
 
 bool Board::initGame(int player, int x, int y)
 {
@@ -100,8 +96,8 @@ void Board::endGame()
 {
   clearPlayers();
   clearBoard();
-  gameData.state = 3;
-  gameData.currentPlayer = 0;
+  state = 3;
+  currentPlayer = 0;
 }
 
 int Board::playersNumber()
