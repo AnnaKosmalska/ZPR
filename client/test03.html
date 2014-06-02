@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+<title>Memo</title>
+<style>
+IMG { height: 150px; width: 150px }
+</style>
+</head>
+<body style ="background-color: #f0e000">
+<table id="tablica">
+</table>
+</body>
+
+<script>
+// ustawiane na wejsciu
+var tableWidth=4;
+var tableHeight=4;
+
+// uzywane w srodku zmienne globalne
+var tileNumber=0;
+var openTilesCount=0;
+var openTiles=[];
+
+
+var mix = [1, 1, 2, 2, 0, 0, 1, 1, 2, 1, 0, 0, 0, 1, 2, 0];  // przypisanie obrazkow do kafelkow - tego nie bedzie! to bedziemy pobierac na biezaco przy odkrywaniu klockow
+var pictures = ["jeden.png", "dwa.png", "trzy.png"];	// same obrazki - moga byc i tu w sumie
+
+function twoTilesOpen()	// mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
+{
+	if(mix[openTiles[0].number] == mix[openTiles[1].number]){ // otwarte obrazki sa takie same
+		openTiles[0].otwarty = 1;
+		openTiles[1].otwarty = 1;
+		openTilesCount--;
+		openTiles.pop();
+		openTilesCount--;
+		openTiles.pop();
+	}
+	else{
+		setTimeout(closeTiles,1250);
+	}
+}
+
+function closeTiles()
+{
+	for(i=openTiles.length-1; i>=0; i--){
+	
+		openTiles[i].innerHTML = "<img src='zakryte.png'>";
+		openTiles[i].otwarty = 0;
+		openTilesCount--;
+		openTiles.pop();
+	}
+}
+
+function makeTd(tr)
+{
+	var td = document.createElement("td"); //zrob <td>
+	td.innerHTML = "<img src='zakryte.png'>";
+	td.setAttribute("id", "k"+(i*100+j));
+	td.otwarty = 0;
+	td.number = tileNumber;
+	tileNumber = tileNumber + 1;
+	td.onclick = function(){
+		if(openTilesCount<2){		// mozna odkrywac
+			if(td.otwarty == 0){	// obrazek zakryty
+				var numer = mix[td.number]; // tutaj bedziemy wysylac zapytanie, co jest
+				var obrazek = pictures[numer]; // w danym miejscu
+				td.innerHTML = "<img src='"+ obrazek +"'>";
+				td.otwarty = 1;
+				//openTiles.push(td.id);
+				openTiles.push(td);
+				
+				//alert(openTiles);
+				openTilesCount++;
+				if(openTilesCount==2){	// sa otwarte dwa obrazki
+					twoTilesOpen();
+					
+				}
+			}
+		
+		}
+	}
+	tr.appendChild(td);
+}
+
+function makeTable()
+{
+	var table = document.getElementById("tablica");
+	
+	for(i=1; i<=tableHeight; i++)
+	{
+		var tr = document.createElement("tr"); //zrob <tr>
+		for(j=1; j<=tableWidth; j++)
+		{
+			makeTd(tr);
+		}
+		table.appendChild(tr);
+	}
+}
+
+
+
+makeTable();
+</script>
+
+</html>

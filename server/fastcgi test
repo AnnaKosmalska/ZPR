@@ -1,0 +1,16 @@
+#Make sure to have all project requirements.
+
+server.modules += ("mod_fastcgi")
+fastcgi.debug = 1
+fastcgi.server = (
+	".py" =>
+	(
+		"python-fcgi" =>
+		(
+		"socket" => "/path/for/socket",
+		"bin-path" => "/path/to/project/fcgi/app.py",
+		"check-local" => "disable",
+		"max-procs" => 1,
+		)
+	)
+)
