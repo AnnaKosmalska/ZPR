@@ -39,6 +39,7 @@ function start(){
 		user: 0,
 		"function": "addPlayer",
 		parameters: [],
+		name: imie,
 	};
 	
 	$.post(address, JSON.stringify(dane), function(data){userId = data.user;});
