@@ -7,6 +7,8 @@ Board::Board()
   sizeX = 5;
   sizeY = 5;
   state = 0;
+  firstPicked = -1;
+  secondPicked = -1;
   currentPlayer = 0;
 }
 
@@ -33,8 +35,9 @@ int Board::addPlayer(std::string name)
 {
   if(playersNumber() >= MAX_PLAYERS)
     return ERR_MAX_PLAYERS;
-  players.push_back(Player(name, playersNumber()));
-  return (playersNumber());
+  int id = playersNumber()+1;
+  players.push_back(Player(name, id));
+  return id;
 }
 
 int Board::getTile(int x, int y) const
@@ -44,8 +47,8 @@ int Board::getTile(int x, int y) const
 
 int Board::choose(int player, int x, int y)
 {
-  if(currentPlayer != player-1)
-    return ERR_CURRENT_PLAYER;
+  /*if(currentPlayer != player-1)
+    return ERR_CURRENT_PLAYER;*/
   
   if(firstPicked == -1)
     {
@@ -55,12 +58,13 @@ int Board::choose(int player, int x, int y)
   if(secondPicked == -1)
     {
       secondPicked = getTile(x,y);
-      currentPlayer = nextPlayer();
+      
       if(secondPicked == firstPicked)
 	players[currentPlayer].incScore(1);
       firstPicked = -1;
       int ret = secondPicked;
-      secondPicked = -1;	
+      secondPicked = -1;
+      currentPlayer = nextPlayer();
       return ret;
     }  
   return ERR_CANNOT_CHOOSE;
