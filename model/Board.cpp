@@ -44,7 +44,7 @@ int Board::getTile(int x, int y) const
 
 int Board::choose(int player, int x, int y)
 {
-  if(gameData.currentPlayer != player)
+  if(gameData.currentPlayer != player-1)
     return ERR_CURRENT_PLAYER;
   
   if(firstPicked == -1)
@@ -55,9 +55,23 @@ int Board::choose(int player, int x, int y)
   if(secondPicked == -1)
     {
       secondPicked = getTile(x,y);
-      return secondPicked;
+      gameData.currentPlayer = nextPlayer();
+      if(secondPicked == firstPicked)
+	players[gameData.currentPlayer].incScore(1);
+      firstPicked = -1;
+      int ret = secondPicked;
+      secondPicked = -1;	
+      return ret;
     }  
   return ERR_CANNOT_CHOOSE;
+}
+
+int Board::nextPlayer()
+{
+  int ret =  gameData.currentPlayer+1;
+  if(ret > playersNumber())
+    ret = 0;
+  return ret;
 }
 
 void Board::removePair()
@@ -72,6 +86,8 @@ Board::GameData Board::getGameData() const
 
 bool Board::initGame(int player, int x, int y)
 {
+  if(player != 1)
+    return false;
   if((x*y)%2)
     ++x;
   sizeX = x;

@@ -59,6 +59,7 @@ private:
   // zwraca karte z danego polozenia
   int getTile(int x, int y) const;
 
+  int nextPlayer();
 
 public: 
   
