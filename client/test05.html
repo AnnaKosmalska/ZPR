@@ -29,8 +29,6 @@ var picturesOpen=[];
 var playerReady=false;
 var address = "../server/new.py";
 
-//var mix = [1, 1, 2, 2, 0, 0, 1, 1, 2, 1, 0, 0, 0, 1, 2, 0];  // przypisanie obrazkow do kafelkow - tego nie bedzie! to bedziemy pobierac na biezaco przy odkrywaniu klockow
-//var pictures = ["nerd.png", "babcia.png", "music.png"];	// same obrazki - moga byc i tu w sumie
 
 
 function start(){
@@ -44,6 +42,18 @@ function start(){
 	
 	$.post(address, JSON.stringify(dane), function(data){userId = data.user;});
 	
+}
+
+
+
+function initGame(){
+	var dane= {
+		user: userId,
+		'function': "initGame",
+		columns: tableWidth,
+		rows: tableHeight,
+	};
+	$.post(address, JSON.stringify(dane), function(data){console.log(data);});
 }
 
 
@@ -68,7 +78,7 @@ function checkTilePicture(x, y, td)
 		parameters: [],
 	};
 	
-	//var address = "../server/new.py";
+
 	$.post(address, JSON.stringify(tileInfo), function(data){
 	
 		console.log(data);
@@ -82,10 +92,8 @@ function checkTilePicture(x, y, td)
 			picturesOpen.push(obrazek);
 			td.innerHTML = "<img src='"+ obrazek +".png'>";
 						td.otwarty = 1;
-						//openTiles.push(td.id);
 						openTiles.push(td);
 						
-						//alert(openTiles);
 						openTilesCount++;
 						if(openTilesCount==2){	// sa otwarte dwa obrazki
 							twoTilesOpen();
@@ -139,8 +147,6 @@ function makeTd(tr)
 	td.onclick = function(){
 		if(openTilesCount<2){		// mozna odkrywac
 			if(td.otwarty == 0){	// obrazek zakryty
-				//var numer = mix[td.number]; // tutaj bedziemy wysylac zapytanie, co jest
-				//var obrazek = pictures[numer]; // w danym miejscu
 				var kolumna = td.number % tableWidth;
 				var rzad = (td.number - kolumna)/tableWidth;
 				checkTilePicture(rzad, kolumna, td);
@@ -173,13 +179,10 @@ function makeTable()
 
 start();
 playerReady = confirm("Jestes gotowy?");
-//while(gameStarted == 0)
-//{
-	//zapytaj o liste graczy i czy juz sie zaczelo
-	
-//	gameStarted = 1;
-//}
-//wyczysc to, co bylo do tej pory
+if(playerReady == 1)
+{
+	initGame();
+}
 
 makeTable();
 
