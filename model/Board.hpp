@@ -121,6 +121,7 @@ BOOST_PYTHON_MODULE(model)
   boost::python::def("choose", choose);
   boost::python::def("initGame", initGame);
   boost::python::def("endGame", endGame);
+  boost::python::def("getGameData", getGameData);
 }
 
 #endif
