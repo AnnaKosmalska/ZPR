@@ -5,7 +5,7 @@
 server.port		= 3000
 server.username		= "http"
 server.groupname	= "http"
-server.document-root	= "/home/thorus/ZPR/ZPR/client"
+server.document-root	= "/home/thorus/ZPR/ZPR//client"
 dir-listing.activate	= "enable"
 index-file.names	= ( "index.html" )
 mimetype.assign		= (

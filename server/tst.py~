@@ -34,7 +34,7 @@ if function == "endGame":
 
 if function == "checkPair":
 	x = model.checkPair(user)
-	#x = dict(user=0,)
+	x = dict(user=0,parameter=x)
   	#boost::python::def("checkPair", checkPair);
 
 if function == "funkcja":

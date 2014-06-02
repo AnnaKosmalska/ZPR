@@ -18,7 +18,7 @@ parameters.append(3)
 user = 0
 x=struct
 if function == "addPlayer":
-	x = model.addPlayer(parameters)
+	x = model.addPlayer()
 #boost::python::def("addPlayer", addPlayer);
 if function == "choose":
 	x = model.choose(0, parameters[0], parameters[1])	

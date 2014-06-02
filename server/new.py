@@ -23,12 +23,11 @@ def App(environ, start_response):
 #dodac wybieranie z jsona informacji, obsluga modelu
 	auser_id = orders["user"]
 	function = orders["function"]
-	parameters = orders["parameters"]
 
 #funkcje
 	if function == "addPlayer":
-		x = model.addPlayer(orders["name"])
-		x = dict(user=x)
+		#x = model.addPlayer()
+		x = dict(user=1)
 	#boost::python::def("addPlayer", addPlayer);
 	#in:	string - name
 	#out:	int - id
@@ -42,14 +41,14 @@ def App(environ, start_response):
 
 
 	if function == "playerReady":
-		x = mode.playerReady(auser_id, orders["ready"])
+		x = model.playerReady(auser_id, orders["ready"])
 		x = dict(status=x)
   	#boost::python::def("startGame", startGame);
 	#in:	int, int - player_id, readyornot
 	#out:	int status
 
 	if function == "initGame":
-		x = mode.initGame(auser_id, orders["rows"], orders["columns"])
+		x = model.initGame(auser_id, orders["rows"], orders["columns"])
 		x = dict(status=x)
   	#boost::python::def("initGame", initGame);
 	#in:	int, int x, int y - player_id, rozmiary planszy
@@ -71,7 +70,7 @@ def App(environ, start_response):
 
 	if function == "wattsUp":
 		x = model.getGameData()
-		x = dict(x)
+		x = dict(score = UpDate("GetScore"), status=UpDate("GetState"), player=UpDate("Player"), first=[UpDate("GetFirst"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
   	#boost::python::def("getGameData", getGameData);
 	#in:	NA
 	#out:	struct GameData
@@ -84,8 +83,6 @@ def App(environ, start_response):
 			x = dict(picture="1.png")
 		else:
 			x = dict(picture="2.png")
-	if (random.random()>0.8):
-		x = dict(picture="nie")
 
 	if function == "ping":
 		x = dict(Fakt="Strusie pedza. Bimber.")
@@ -103,3 +100,31 @@ def App(environ, start_response):
 if __name__ == '__main__':
 	from flup.server.fcgi import WSGIServer
 	WSGIServer(App).run()
+
+
+
+
+def UpDate(co):
+	#int getScore(int gracz)
+	if co == "GetScore":
+		return model.getScore(auser_id)
+	#int getState() stan gry
+	if co == "GetState":
+		return model.getState()
+	#int getCurrentPlayer() kto teraz gra
+	if co == "getCurrentPlayer":
+		return model.getCurrentPlayer()
+	#int getFirst() pierwszy kartonik
+	if co == "getFirstX":
+		return model.getFirstX()
+	if co == "getFirstY":
+		return model.getFirstY()
+	if co == "getFirstIn":
+		return model.getFirstIn()
+	#int getSecond() drugi kartonik
+	if co == "getSecondX":
+		return model.getSecondX()
+	if co == "getSecondY":
+		return model.getSecondY()
+	if co == "getSecondIn":
+		return model.getSecondIn()

@@ -1,2 +1,7 @@
+#easy_install pip
+#fastcgi, lighttpd
+
+#pip install -r wymagania.txt
+
 flup==1.0.2
 wsgiref==0.1.2
