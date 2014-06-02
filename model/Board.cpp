@@ -31,12 +31,12 @@ void Board::clearPlayers()
   players.clear();
 }
 
-int Board::addPlayer(std::string name)
+int Board::addPlayer()
 {
   if(playersNumber() >= MAX_PLAYERS)
     return ERR_MAX_PLAYERS;
   int id = playersNumber()+1;
-  players.push_back(Player(name, id));
+  players.push_back(Player("Ania", id));
   return id;
 }
 

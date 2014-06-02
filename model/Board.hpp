@@ -52,7 +52,7 @@ public:
   
   // dodaje gracza do gry
   // zwraca id gracza lub -1 jesli blad
-  int addPlayer(std::string name);
+  int addPlayer();
   
   static Board& getInstance()
   {
@@ -96,9 +96,9 @@ int playerReady(int player, int decision)
   return Board::getInstance().playerReady(player, decision);
 }
 
-int addPlayer(std::string name)
+int addPlayer()
 {
-  return Board::getInstance().addPlayer(name);
+  return Board::getInstance().addPlayer();
 }
 int choose(int player, int x, int y)
 {
