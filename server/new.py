@@ -26,7 +26,9 @@ def App(environ, start_response):
 
 #funkcje
 	if function == "addPlayer":
-		#x = model.addPlayer()
+		data = "Nowy"
+		data = data.encode('utf8')
+		x = model.addPlayer(data)
 		x = dict(user=1)
 	#boost::python::def("addPlayer", addPlayer);
 	#in:	string - name
@@ -70,7 +72,8 @@ def App(environ, start_response):
 
 	if function == "wattsUp":
 		x = model.getGameData()
-		x = dict(score = UpDate("GetScore"), status=UpDate("GetState"), player=UpDate("Player"), first=[UpDate("GetFirst"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
+		#x = dict(score = UpDate("GetScore"), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), first=[UpDate("GetFirst"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
+		x = dict(player=UpDate("getCurrentPlayer")
   	#boost::python::def("getGameData", getGameData);
 	#in:	NA
 	#out:	struct GameData
