@@ -7,6 +7,7 @@ import sys
 import json
 import os
 import model
+import random
 
 def App(environ, start_response):
 #sprawdzamy pakiet, pobieramy dlugosc
@@ -79,13 +80,18 @@ def App(environ, start_response):
 		#x = dict(one=[1, 2, 3], two=[2, 3, 3], three=[3, 2, 1])
 		#x['atrybut'] = 0
 		#x['atrybut'] = [1, 2, 3, 4, 5]
-		if (orders["row"] % 2) == 1:
-			x = dict(picture="nerd.png")
-		if (orders["row"] % 2) == 0:
-			x= dict(picture="babcia.png")
+		if (random.random()>0.5):
+			x = dict(picture="1.png")
+		else:
+			x = dict(picture="2.png")
+	if (random.random()>0.8):
+		x = dict(picture="nie")
+
+	if function == "ping":
+		x = dict(Fakt="Strusie pedza. Bimber.")
 
 #odpowiadanie
-	ret_packet = json.dump(x)
+	ret_packet = json.dumps(x)
 	stat = '200 OK'
 
 	response_headers = [('Content-Type', 'application/json'), ('Content-Length', str(len(ret_packet)))]

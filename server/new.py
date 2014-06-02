@@ -7,6 +7,7 @@ import sys
 import json
 import os
 import model
+import random
 
 def App(environ, start_response):
 #sprawdzamy pakiet, pobieramy dlugosc
@@ -34,7 +35,7 @@ def App(environ, start_response):
 
 	if function == "choose":
 		x = model.choose(auser_id, orders["row"], orders["column"])
-		x = dict(id_obrazka=x)
+		x = dict(picture=x)
 	#boost::python::def("choose", choose);
 	#in:	int, int, int - player, x, y
 	#out:	int - id_obrazka
@@ -80,9 +81,9 @@ def App(environ, start_response):
 		#x['atrybut'] = 0
 		#x['atrybut'] = [1, 2, 3, 4, 5]
 		if (random.random()>0.5):
-			x = dict(picture="nerd.png")
+			x = dict(picture="1.png")
 		else:
-			x = dict(picture="babcia.png")
+			x = dict(picture="2.png")
 	if (random.random()>0.8):
 		x = dict(picture="nie")
 
@@ -90,7 +91,7 @@ def App(environ, start_response):
 		x = dict(Fakt="Strusie pedza. Bimber.")
 
 #odpowiadanie
-	ret_packet = json.dump(x)
+	ret_packet = json.dumps(x)
 	stat = '200 OK'
 
 	response_headers = [('Content-Type', 'application/json'), ('Content-Length', str(len(ret_packet)))]
