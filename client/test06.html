@@ -67,6 +67,7 @@ function start(){
 	var dane = {
 		user: userId,
 		"function": "addPlayer",
+		name: imie,
 	};
 	
 	$.post(address, JSON.stringify(dane), function(data){userId = data.user;});
@@ -165,10 +166,10 @@ function twoTilesOpen()	// mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
 		openTiles.pop();
 		picturesOpen.pop();
 		picturesOpen.pop();
-		setTimeout(endTurn,1250);
+		setTimeout(endTurn,2500);
 	}
 	else{
-		setTimeout(closeTiles,1250);
+		setTimeout(closeTiles,2500);
 	}
 	
 	
