@@ -9,6 +9,32 @@ import os
 import model
 import random
 
+def UpDate(co):
+	#int getScore(int gracz)
+	if co == "GetScore":
+		return model.getScore(auser_id)
+	#int getState() stan gry
+	if co == "GetState":
+		return model.getState()
+	#int getCurrentPlayer() kto teraz gra
+	if co == "getCurrentPlayer":
+		return model.getCurrentPlayer()
+	#int getFirst() pierwszy kartonik
+	if co == "getFirstX":
+		return model.getFirstX()
+	if co == "getFirstY":
+		return model.getFirstY()
+	if co == "getFirstIn":
+		return model.getFirstIn()
+	#int getSecond() drugi kartonik
+	if co == "getSecondX":
+		return model.getSecondX()
+	if co == "getSecondY":
+		return model.getSecondY()
+	if co == "getSecondIn":
+		return model.getSecondIn()
+
+
 def App(environ, start_response):
 #sprawdzamy pakiet, pobieramy dlugosc
 	try:
@@ -50,7 +76,7 @@ def App(environ, start_response):
 	#out:	int status
 
 	if function == "initGame":
-		x = model.initGame(auser_id, orders["rows"], orders["columns"])
+		x = model.initGame(orders["rows"], orders["columns"])
 		x = dict(status=x)
   	#boost::python::def("initGame", initGame);
 	#in:	int, int x, int y - player_id, rozmiary planszy
@@ -84,7 +110,7 @@ def App(environ, start_response):
 	#out:	
 
 	if function == "wattsUp":
-		x = model.getGameData()
+		#x = model.getGameData()
 		#x = dict(score = UpDate("GetScore"), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), first=[UpDate("GetFirst"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
 		x = dict(player=UpDate("getCurrentPlayer"))
   	#boost::python::def("getGameData", getGameData);
@@ -119,28 +145,3 @@ if __name__ == '__main__':
 
 
 
-
-def UpDate(co):
-	#int getScore(int gracz)
-	if co == "GetScore":
-		return model.getScore(auser_id)
-	#int getState() stan gry
-	if co == "GetState":
-		return model.getState()
-	#int getCurrentPlayer() kto teraz gra
-	if co == "getCurrentPlayer":
-		return model.getCurrentPlayer()
-	#int getFirst() pierwszy kartonik
-	if co == "getFirstX":
-		return model.getFirstX()
-	if co == "getFirstY":
-		return model.getFirstY()
-	if co == "getFirstIn":
-		return model.getFirstIn()
-	#int getSecond() drugi kartonik
-	if co == "getSecondX":
-		return model.getSecondX()
-	if co == "getSecondY":
-		return model.getSecondY()
-	if co == "getSecondIn":
-		return model.getSecondIn()
