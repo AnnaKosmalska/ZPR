@@ -9,7 +9,7 @@ import os
 import model
 import random
 
-def UpDate(co, auser):
+def UpDate(co, auser=0):
 	#int getScore(int gracz)
 	if co == "GetScore":
 		return model.getScore(auser)
@@ -111,7 +111,7 @@ def App(environ, start_response):
 
 	if function == "wattsUp":
 		#x = model.getGameData()
-		x = dict(score = UpDate("GetScore", auser_id), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), first=[UpDate("GetFirstX"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
+		x = dict(score = UpDate("GetScore",  auser_id), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), first=[UpDate("GetFirstX"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
 		#x = dict(player=UpDate("getCurrentPlayer"))
   	#boost::python::def("getGameData", getGameData);
 	#in:	NA
