@@ -42,6 +42,16 @@ var dane = {
 }
 
 
+function endTurn(){
+	var end= {
+			user: userId,
+			"function": "endTurn",
+		};
+		
+		$.post(address, JSON.stringify(end), function(data){console.log(data);});
+}
+
+
 function start(){
 	var imie = prompt("Podaj imie");
 	var dane = {
@@ -148,17 +158,13 @@ function twoTilesOpen()	// mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
 		openTiles.pop();
 		picturesOpen.pop();
 		picturesOpen.pop();
-		
+		setTimeout(endTurn,1250);
 	}
 	else{
 		setTimeout(closeTiles,1250);
 	}
 	
-	var end= {
-		user: userId,
-		"function": "endTurn",
-	};
-	$.post(address, JSON.stringify(end), function(data){console.log(data);});
+	
 }
 
 function closeTiles()
@@ -171,6 +177,7 @@ function closeTiles()
 		openTiles.pop();
 		picturesOpen.pop();
 	}
+	endTurn();
 }
 
 function makeTd(tr)
