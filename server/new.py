@@ -22,6 +22,7 @@ def UpDate(co, auser=0):
     @param co nazwa wolanej funkcji
     @param auser przekazuje nazwe uzytkownika
     """
+    
 	if co == "GetScore":
 		return model.getScore(auser)
 	if co == "GetState":
