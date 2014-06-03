@@ -20,19 +20,6 @@ def UpDate(co, auser=0):
 	if co == "getCurrentPlayer":
 		return model.getCurrentPlayer()
 	#int getFirst() pierwszy kartonik
-	if co == "getFirstX":
-		return model.getFirstX()
-	if co == "getFirstY":
-		return model.getFirstY()
-	if co == "getFirstIn":
-		return model.getFirstPicked()
-	#int getSecond() drugi kartonik
-	if co == "getSecondX":
-		return model.getSecondX()
-	if co == "getSecondY":
-		return model.getSecondY()
-	if co == "getSecondIn":
-		return model.getSecondPicked()
 
 
 def App(environ, start_response):
