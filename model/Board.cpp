@@ -1,14 +1,16 @@
 
 #include "Board.hpp"
-#include <boost/random.hpp>
+#include "Constants.hpp"
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_int.hpp>
+#include <boost/random/variate_generator.hpp>
 
 Board::Board()
 {
-  sizeX = 5;
-  sizeY = 5;
+  //sizeX=1;
+  //sizeY=1;
+  //initBoard();
   state = 0;
-  firstPicked = -1;
-  secondPicked = -1;
   currentPlayer = 0;
 }
 
@@ -31,13 +33,13 @@ void Board::clearPlayers()
   players.clear();
 }
 
-int Board::addPlayer()
+int Board::addPlayer(std::string name)
 {
+  if(state == 0) return -2;
   if(playersNumber() >= MAX_PLAYERS)
-    return ERR_MAX_PLAYERS;
-  int id = playersNumber()+1;
-  players.push_back(Player("Ania", id));
-  return id;
+    return -2;
+  players.push_back(Player(name, playersNumber()));
+  return playersNumber()-1;
 }
 
 int Board::getTile(int x, int y) const
@@ -47,53 +49,66 @@ int Board::getTile(int x, int y) const
 
 int Board::choose(int player, int x, int y)
 {
-  /*if(currentPlayer != player-1)
-    return ERR_CURRENT_PLAYER;*/
-  
+  if(playersNumber()==0)
+    return -300;
+  if(player != currentPlayer)
+    return -200;
+  if(x>=sizeX || y>=sizeY)
+    return -100;
   if(firstPicked == -1)
     {
       firstPicked = getTile(x, y);
+      firstX=x;
+      firstY=y;
       return firstPicked;
     }
   if(secondPicked == -1)
     {
       secondPicked = getTile(x,y);
-      
-      if(secondPicked == firstPicked)
-	players[currentPlayer].incScore(1);
-      firstPicked = -1;
+      secondX=x;
+      secondY=y;
       int ret = secondPicked;
-      secondPicked = -1;
-      currentPlayer = nextPlayer();
+      if(firstPicked == secondPicked)
+	{
+	  players[player].incScore(1);
+	  removePair();
+	}     
       return ret;
-    }  
-  return ERR_CANNOT_CHOOSE;
-}
-
-int Board::nextPlayer()
-{
-  int ret =  currentPlayer+1;
-  if(ret > playersNumber())
-    ret = 0;
-  return ret;
+    }
+  return -1;
 }
 
 void Board::removePair()
 {
-  ///TODO
+  std::map<std::pair<int, int>, int>::iterator it = board.find(std::pair<int, int>(firstX, firstY));
+  if(it != board.end())
+    it->second = -123;
+  it = board.find(std::pair<int, int>(secondX, secondY));
+  if(it != board.end())
+    it->second = -123;
 }
 
-
-bool Board::initGame(int player, int x, int y)
+int Board::endTurn()
 {
-  if(player != 1)
-    return false;
-  if((x*y)%2)
-    ++x;
+  firstPicked = -1;
+  firstX = -1;
+  firstY = -1;
+  secondPicked = -1;
+  secondX = -1;
+  secondY = -1;
+  if(currentPlayer == playersNumber()-1) currentPlayer = 0;
+    else ++currentPlayer;
+  return currentPlayer;
+}
+
+void Board::initGame(int x, int y)
+{
   sizeX = x;
   sizeY = y;
+  firstPicked = -1;
+  secondPicked = -1;
   initBoard();
-  return 1;
+  state = 1;
 }
 
 void Board::endGame()
@@ -111,43 +126,37 @@ int Board::playersNumber()
 
 void Board::initBoard()
 {
+  boost::mt19937 gen;
+  
+
   
   std::vector<int> tiles;
-  int fullSize = sizeX*sizeY;
-  for(int i = 0; i < fullSize; i+=2)
+  int fullSize = sizeX*sizeY/2;
+  for(int i = 0; i < fullSize; ++i)
     {
       tiles.push_back(i);
       tiles.push_back(i);
+      
     }
+  fullSize*=2;
+
   
   for(int i = 0; i < sizeX; ++i)
     {
       for(int j = 0; j < sizeY; ++j)
 	{
-	  int pickedIndex = randomTile(fullSize);
+	  boost::uniform_int<> dist(0, fullSize-1);
+	  boost::variate_generator<boost::mt19937&, boost::uniform_int<> > die(gen, dist);
+	  int pickedIndex = die();
 	  std::pair<int,int> position;
 	  position = std::make_pair(i, j);
 	  board.insert(std::pair<std::pair<int,int>, int>(position, tiles[pickedIndex]));
-	  tiles[pickedIndex] = tiles[fullSize];
-	  --fullSize;	  
+	  //board.insert(std::pair<std::pair<int,int>, int>(position, tiles[i*sizeX+j]));
+	  tiles[pickedIndex] = tiles[--fullSize];
 	}
     }
 }
 
-int Board::randomTile(int range)
-{
-  /* boost::mt19937 generator(static_cast<int>(std::time(0)));
-  boost::random::uniform_int_distribution<> distance(0, range-1);
-  return randRange(randTileGen);*/
-  return 1;
-}
 
-int Board::playerReady(int player, int decision)
-{
-  if(decision == false)
-    return -1;
-    //TODO deleteplayer
-  if(decision == true)
-    return 1;
-  return 0;
-}
+
+
