@@ -25,14 +25,14 @@ def UpDate(co):
 	if co == "getFirstY":
 		return model.getFirstY()
 	if co == "getFirstIn":
-		return model.getFirstIn()
+		return model.getFirstPicked()
 	#int getSecond() drugi kartonik
 	if co == "getSecondX":
 		return model.getSecondX()
 	if co == "getSecondY":
 		return model.getSecondY()
 	if co == "getSecondIn":
-		return model.getSecondIn()
+		return model.getSecondPicked()
 
 
 def App(environ, start_response):
@@ -102,17 +102,17 @@ def App(environ, start_response):
 	#in:	NA
 	#out:	NA
 
-	#if function == "checkPair":
-	#	x = model.checkPair(auser)
-	#	x = dict(user_id=auser_id,parameter=x)
+	if function == "checkState":
+		x = model.getState()
+		x = dict(user_id=auser_id,State=x)
   	#boost::python::def("checkPair", checkPair);
 	#in:	
 	#out:	
 
 	if function == "wattsUp":
 		#x = model.getGameData()
-		#x = dict(score = UpDate("GetScore"), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), first=[UpDate("GetFirst"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
-		x = dict(player=UpDate("getCurrentPlayer"))
+		x = dict(score = UpDate("GetScore"), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), first=[UpDate("GetFirstX"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
+		#x = dict(player=UpDate("getCurrentPlayer"))
   	#boost::python::def("getGameData", getGameData);
 	#in:	NA
 	#out:	struct GameData
