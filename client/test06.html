@@ -37,7 +37,17 @@ var dane = {
 		"function": "checkState",
 	};
 	
-	$.post(address, JSON.stringify(dane), function(data){gameInitialized = data.State;});
+	$.post(address, JSON.stringify(dane), function(data){
+		gameInitialized = data.State;
+		if(gameInitialized==0){
+			initGame();
+			gameInitialized=1;
+		}
+		start();
+
+		makeTable();
+		
+		});
 
 }
 
@@ -77,6 +87,7 @@ function initGame(){
 		columns: num1,
 		rows: num2,
 	};
+	
 	if(gameInitialized==0){
 		$.post(address, JSON.stringify(dane), function(data){console.log(data);});
 	}
@@ -214,17 +225,17 @@ function makeTable()
 	}
 }
 
+// koniec deklaracji, poczatek wywolan
 
 
 checkState();
-if(gameInitialized==0){
-	initGame();
-	gameInitialized=1;
-}
-start();
-playerReady = confirm("Jestes gotowy?");
+//if(gameInitialized==0){
+//	initGame();
+//	gameInitialized=1;
+//}
+//start();
 
-makeTable();
+//makeTable();
 
 </script>
 
