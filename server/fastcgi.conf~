@@ -8,7 +8,7 @@ fastcgi.server = (
 		"python-fcgi" =>
 		(
 		"socket" => "/home/thorus/ZPR/ZPR/socket",
-		"bin-path" => "server/new.py",
+		"bin-path" => "/home/thorus/ZPR/ZPR/server/new.py",
 		"check-local" => "disable",
 		"max-procs" => 1,
 		)

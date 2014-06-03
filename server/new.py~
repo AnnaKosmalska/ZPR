@@ -72,8 +72,13 @@ def App(environ, start_response):
 
 	if function == "wattsUp":
 		x = model.getGameData()
+<<<<<<< HEAD
 		#x = dict(score = UpDate("GetScore"), status=UpDate("GetState"), player=UpDate("Player"), first=[UpDate("GetFirst"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
 		
+=======
+		#x = dict(score = UpDate("GetScore"), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), first=[UpDate("GetFirst"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
+		x = dict(player=UpDate("getCurrentPlayer"))
+>>>>>>> 1beff28a1876ae62b5940ebd0c3ad0a9a6279219
   	#boost::python::def("getGameData", getGameData);
 	#in:	NA
 	#out:	struct GameData
