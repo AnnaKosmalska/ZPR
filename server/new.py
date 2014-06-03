@@ -69,11 +69,24 @@ def App(environ, start_response):
   	#boost::python::def("checkPair", checkPair);
 	#in:	
 	#out:	
+	if function == "endTurn":
+		x = model.endTurn(auser_id)
+		x = dict(status=x)
+  	#boost::python::def("endGame", endGame);
+	#in:	NA
+	#out:	NA
+
+	#if function == "checkPair":
+	#	x = model.checkPair(auser)
+	#	x = dict(user_id=auser_id,parameter=x)
+  	#boost::python::def("checkPair", checkPair);
+	#in:	
+	#out:	
 
 	if function == "wattsUp":
 		x = model.getGameData()
 		#x = dict(score = UpDate("GetScore"), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), first=[UpDate("GetFirst"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
-		x = dict(player=UpDate("getCurrentPlayer")
+		x = dict(player=UpDate("getCurrentPlayer"))
   	#boost::python::def("getGameData", getGameData);
 	#in:	NA
 	#out:	struct GameData
