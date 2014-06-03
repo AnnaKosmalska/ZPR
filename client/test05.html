@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+<title>Memo</title>
+<style>
+IMG { height: 50px; width: 50px }
+</style>
+</head>
+<body style ="background-color: #f0e000">
+<table id="tablica">
+</table>
+</body>
+<script type="text/javascript" src="jquery-1.11.0.js"></script>
+<script>
+// ustawiane na wejsciu
+var tableWidth=4;
+var tableHeight=4;
+
+// dostaje od serwera
+var userId = 0;
+
+var gameInitialized=0;
+var gameStarted = 0;
+
+// uzywane w srodku zmienne globalne
+var tileNumber=0;
+var openTilesCount=0;
+var openTiles=[];
+var picturesOpen=[];
+var playerReady=false;
+var address = "../server/new.py";
+
+
+function checkState(){
+var dane = {
+		user: 0,
+		"function": "addPlayer",
+	};
+	
+	$.post(address, JSON.stringify(dane), function(data){gameInitialized = data.State;});
+}
+
+
+function start(){
+	var imie = prompt("Podaj imie");
+	var dane = {
+		user: 0,
+		"function": "addPlayer",
+	};
+	
+	$.post(address, JSON.stringify(dane), function(data){userId = data.user;});
+	
+}
+
+
+
+function initGame(){
+	tableWidth = prompt("Podaj szerokosc planszy: ");
+	var num1 = parseInt(tableWidth);
+	var num2 = parseInt(tableHeight);
+	
+	tableHeight = prompt("Podaj wysokosc planszy: ");
+	var dane= {
+		'user': userId,
+		'function': "initGame",
+		columns: num1,
+		rows: num2,
+	};
+	$.post(address, JSON.stringify(dane), function(data){console.log(data);});
+}
+
+
+setInterval(function(){
+	var address = "../server/new.py";
+	var coTam= {
+		user: userId,
+		"function": "wattsUp",
+		//parameters: [],
+	};
+	
+    $.post(address, JSON.stringify(coTam), function(data){console.log(data);});
+	},1000);
+
+function checkTilePicture(x, y, td)
+{
+	var tileInfo= {
+		user: 1,
+		row: x,
+		column: y,
+		"function": "choose",
+		//parameters: [],
+	};
+	
+
+	$.post(address, JSON.stringify(tileInfo), function(data){
+	
+		console.log(data);
+		obrazek = data.picture;
+		if(obrazek == "nie")
+		{
+			alert("To nie Twoja tura!");
+		}
+		else
+		{
+			picturesOpen.push(obrazek);
+			td.innerHTML = "<img src='"+ obrazek +".png'>";
+						td.otwarty = 1;
+						openTiles.push(td);
+						
+						openTilesCount++;
+						if(openTilesCount==2){	// sa otwarte dwa obrazki
+							twoTilesOpen();
+							
+						}
+		}
+	}); // chodzilo bez srednika, sprawdzic z
+	
+	
+
+
+}
+
+function twoTilesOpen()	// mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
+{
+	if(picturesOpen[0]==picturesOpen[1]){ // otwarte obrazki sa takie same - DOROBIC!!!!
+		openTiles[0].otwarty = 1;
+		openTiles[1].otwarty = 1;
+		openTilesCount--;
+		openTiles.pop();
+		openTilesCount--;
+		openTiles.pop();
+		picturesOpen.pop();
+		picturesOpen.pop();
+	}
+	else{
+		setTimeout(closeTiles,1250);
+	}
+}
+
+function closeTiles()
+{
+	for(i=openTiles.length-1; i>=0; i--){
+	
+		openTiles[i].innerHTML = "<img src='zakryte.png'>";
+		openTiles[i].otwarty = 0;
+		openTilesCount--;
+		openTiles.pop();
+		picturesOpen.pop();
+	}
+}
+
+function makeTd(tr)
+{
+	var td = document.createElement("td"); //zrob <td>
+	td.innerHTML = "<img src='zakryte.png'>";
+	td.setAttribute("id", "k"+(i*100+j));
+	td.otwarty = 0;
+	td.number = tileNumber;
+	tileNumber = tileNumber + 1;
+	td.onclick = function(){
+		if(openTilesCount<2){		// mozna odkrywac
+			if(td.otwarty == 0){	// obrazek zakryty
+				var kolumna = td.number % tableWidth;
+				var rzad = (td.number - kolumna)/tableWidth;
+				checkTilePicture(rzad, kolumna, td);
+				
+			
+			}
+		
+		}
+	}
+	tr.appendChild(td);
+}
+
+function makeTable()
+{
+	var table = document.getElementById("tablica");
+	
+	for(i=1; i<=tableHeight; i++)
+	{
+		var tr = document.createElement("tr"); //zrob <tr>
+		for(j=1; j<=tableWidth; j++)
+		{
+			makeTd(tr);
+		}
+		table.appendChild(tr);
+	}
+}
+
+
+
+checkState();
+if(gameInitialized==0){
+	initGame();
+	gameInitialized=1;
+}
+start();
+playerReady = confirm("Jestes gotowy?");
+
+makeTable();
+
+</script>
+
+</html>
