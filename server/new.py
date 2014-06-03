@@ -16,13 +16,13 @@ import model
 import random
 
 def UpDate(co, auser=0):
-    """Funkcja UpDate
+"""Funkcja UpDate
 
-    Jest uzywana przy przekazywaniu informacji dla wolania o aktualny stan gry.
-    @param co nazwa wolanej funkcji
-    @param auser przekazuje nazwe uzytkownika
+Jest uzywana przy przekazywaniu informacji dla wolania o aktualny stan gry.
+@param co nazwa wolanej funkcji
+@param auser przekazuje nazwe uzytkownika
     """
-    
+
 	if co == "GetScore":
 		return model.getScore(auser)
 	if co == "GetState":
