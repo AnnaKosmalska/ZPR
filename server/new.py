@@ -58,7 +58,7 @@ def App(environ, start_response):
 		x = dict(user=1)
 
 	if function == "choose":
-		x = model.choose(auser_id, orders["row"], orders["column"])
+		x = model.choose(auser_id, int(orders["row"]), int(orders["column"]))
 		x = dict(picture=x)
 
 
@@ -67,7 +67,7 @@ def App(environ, start_response):
 		x = dict(status=x)
 
 	if function == "initGame":
-		x = model.initGame(orders["rows"], orders["columns"])
+		x = model.initGame(int(orders["rows"]), int(orders["columns"]))
 		x = dict(status=x)
 
 	if function == "endGame":
@@ -83,7 +83,7 @@ def App(environ, start_response):
 		x = dict(user_id=auser_id,State=x)
 
 	if function == "wattsUp":
-		x = dict(score = UpDate("GetScore",  auser_id), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), testfirst=model.getFirstX(), first=[UpDate("GetFirstX"), UpDate("GetFirstY"), UpDate("GetFirstIn")], second=[UpDate("GetSecondX"), UpDate("GetSecondY"), UpDate("GetSecondIn")])
+		x = dict(score = UpDate("GetScore",  auser_id), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), testfirst=model.getFirstX(), first=[model.getFirstX(), model.getFirstY(), model.getFirstPicked()], second=[model.getSecondX(), model.getSecondY(), model.getSecondPicked()])
 
 #odpowiadanie
 	ret_packet = json.dumps(x)
