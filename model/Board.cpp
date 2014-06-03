@@ -35,8 +35,9 @@ void Board::clearPlayers()
 
 int Board::addPlayer(std::string name)
 {
+  if(state == 0) return -2;
   if(playersNumber() >= MAX_PLAYERS)
-    return -1;
+    return -2;
   players.push_back(Player(name, playersNumber()));
   return playersNumber()-1;
 }
@@ -107,6 +108,7 @@ void Board::initGame(int x, int y)
   firstPicked = -1;
   secondPicked = -1;
   initBoard();
+  state = 1;
 }
 
 void Board::endGame()
