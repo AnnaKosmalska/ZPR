@@ -1,8 +1,0 @@
-#easy_install pip
-#fastcgi, lighttpd
-#fastcgi - sudo lighttpd-enable-mod fastcgi
-
-#pip install -r wymagania.txt
-
-flup==1.0.2
-wsgiref==0.1.2
