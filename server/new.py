@@ -96,7 +96,7 @@ def App(environ, start_response):
 	#in:	
 	#out:	
 	if function == "endTurn":
-		x = model.endTurn(auser_id)
+		x = model.endTurn()
 		x = dict(status=x)
   	#boost::python::def("endGame", endGame);
 	#in:	NA
