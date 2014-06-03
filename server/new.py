@@ -76,7 +76,7 @@ def App(environ, start_response):
 	#out:	int status
 
 	if function == "initGame":
-		x = model.initGame(int(orders["rows"]), int(orders["columns"]))
+		x = model.initGame(orders["rows"], orders["columns"])
 		x = dict(status=x)
   	#boost::python::def("initGame", initGame);
 	#in:	int, int x, int y - player_id, rozmiary planszy
