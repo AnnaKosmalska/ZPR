@@ -5,8 +5,7 @@
 """@package Python
 Modul Pythona sluzacy do komunikacji miedzy klientem a serwerem.
 
-Modul ten dziala przy serwerze FastCGI. Za pomoca formatu JSON porozumiewa się on z klientem i przetwarza jego zadania dla modelu gry. 
-Po otrzymaniu odpowiedzi od modelu zwraca ja, odpowiednio sformatowana, do klienta.
+Modul ten dziala przy serwerze FastCGI. Za pomoca formatu JSON porozumiewa się on z klientem i przetwarza jego zadania dla modelu gry. Po otrzymaniu odpowiedzi od modelu zwraca ja, odpowiednio sformatowana, do klienta.
 """
 
 import os
