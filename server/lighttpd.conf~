@@ -5,7 +5,7 @@
 server.port		= 3000
 server.username		= "http"
 server.groupname	= "http"
-server.document-root	= "/home/thorus/ZPR/ZPR//client"
+server.document-root	= "/home/ania/ZPR/client"
 dir-listing.activate	= "enable"
 index-file.names	= ( "index.html" )
 mimetype.assign		= (
@@ -19,4 +19,4 @@ mimetype.assign		= (
 				".png" => "image/png",
 				"" => "application/octet-stream"
 			)
-include "/home/thorus/ZPR/ZPR/server/fastcgi.conf"
+include "/home/ania/ZPR/server/fastcgi.conf"

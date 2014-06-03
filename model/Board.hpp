@@ -69,7 +69,7 @@ public:
 
   void endGame();
 
-  bool checkPair(int player);
+  int endTurn();
 
   int getCurrentPlayer()
   {
@@ -79,16 +79,44 @@ public:
   {
     return state;
   }
+  int getFirstPicked()
+  {
+    return firstPicked;
+  }
+  int getFirstX()
+  {
+    return firstX;
+  }
+  int getFirstY()
+  {
+    return firstY;
+  }
+  int getSecondPicked()
+  {
+    return secondPicked;
+  }
+  int getSecondX()
+  {
+    return secondX;
+  }
+  int getSecondY()
+  {
+    return secondY;
+  }
+  int getScore(int player)
+  {
+    return players[player].getScore();
+  }
   
 };
 
 int addPlayer(std::string name)
 {
-  return Board::getInstance().addPlayer(name);
+  return Board::getInstance().addPlayer(name)+1;
 }
 int choose(int player, int x, int y)
 {
-  return Board::getInstance().choose(player, x, y);
+  return Board::getInstance().choose(player-1, x, y);
 }
 void initGame(int x, int y)
 {
@@ -98,15 +126,47 @@ void endGame()
 {
   Board::getInstance().endGame();
 }
-bool checkPair(int player)
-{
-  return Board::getInstance().checkPair(player);
-}
 int getCurrentPlayer()
 {
-  return Board::getInstance().getCurrentPlayer();
+  return Board::getInstance().getCurrentPlayer()+1;
+}
+int getState()
+{
+  return Board::getInstance().getState();
+}
+int getFirstPicked()
+{
+  return Board::getInstance().getFirstPicked();
+}
+int getFirstX()
+{
+  return Board::getInstance().getFirstX();
+}
+int getFirstY()
+{
+  return Board::getInstance().getFirstY();
+}
+int getSecondPicked()
+{
+  return Board::getInstance().getSecondPicked();
+}
+int getSecondX()
+{
+  return Board::getInstance().getSecondX();
+}
+int getSecondY()
+{
+  return Board::getInstance().getSecondY();
+}
+int getScore(int player)
+{
+  return Board::getInstance().getScore(player-1);
 }
 
+int endTurn()
+{
+  return Board::getInstance().endTurn()+1;
+}
 
 BOOST_PYTHON_MODULE(model)
 {
@@ -114,8 +174,16 @@ BOOST_PYTHON_MODULE(model)
   boost::python::def("choose", choose);
   boost::python::def("initGame", initGame);
   boost::python::def("endGame", endGame);
-  boost::python::def("checkPair", checkPair);
   boost::python::def("getCurrentPlayer", getCurrentPlayer);
+  boost::python::def("getState", getState);
+  boost::python::def("getFirstPicked", getFirstPicked);
+  boost::python::def("getFirstX", getFirstX);
+  boost::python::def("getFirstY", getFirstY);
+  boost::python::def("getSecondPicked", getSecondPicked);
+  boost::python::def("getSecondX", getSecondX);
+  boost::python::def("getSecondY", getSecondY);
+  boost::python::def("endTurn", endTurn);
+  boost::python::def("getScore", getScore);
 }
 
 #endif

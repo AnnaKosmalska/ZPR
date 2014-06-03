@@ -56,29 +56,49 @@ int Board::choose(int player, int x, int y)
     return -100;
   if(firstPicked == -1)
     {
-      secondPicked = -1;
       firstPicked = getTile(x, y);
+      firstX=x;
+      firstY=y;
       return firstPicked;
     }
   if(secondPicked == -1)
     {
       secondPicked = getTile(x,y);
+      secondX=x;
+      secondY=y;
+      int ret = secondPicked;
       if(firstPicked == secondPicked)
-	players[player].incScore(1);
-      firstPicked = -1;
-      if(currentPlayer == playersNumber()-1) currentPlayer = 0;
-      else ++currentPlayer;
-      return secondPicked;
+	{
+	  players[player].incScore(1);
+	  removePair();
+	}     
+      return ret;
     }
   return -1;
 }
 
 void Board::removePair()
 {
-  ///TODO
+  std::map<std::pair<int, int>, int>::iterator it = board.find(std::pair<int, int>(firstX, firstY));
+  if(it != board.end())
+    it->second = -123;
+  it = board.find(std::pair<int, int>(secondX, secondY));
+  if(it != board.end())
+    it->second = -123;
 }
 
-
+int Board::endTurn()
+{
+  firstPicked = -1;
+  firstX = -1;
+  firstY = -1;
+  secondPicked = -1;
+  secondX = -1;
+  secondY = -1;
+  if(currentPlayer == playersNumber()-1) currentPlayer = 0;
+    else ++currentPlayer;
+  return currentPlayer;
+}
 
 void Board::initGame(int x, int y)
 {
@@ -135,16 +155,6 @@ void Board::initBoard()
     }
 }
 
-bool Board::checkPair(int player)
-{
-  if(state == PICKED_SECOND)
-    {
-      state = END;
-      if(firstPicked == secondPicked)
-	return true;
-    }
-  return false;
-}
 
 
 
