@@ -19,6 +19,7 @@ var tableHeight=4;
 // dostaje od serwera
 var userId = 0;
 
+var gameInitialized=0;
 var gameStarted = 0;
 
 // uzywane w srodku zmienne globalne
@@ -30,14 +31,21 @@ var playerReady=false;
 var address = "../server/new.py";
 
 
+function checkState(){
+var dane = {
+		user: 0,
+		"function": "addPlayer",
+	};
+	
+	$.post(address, JSON.stringify(dane), function(data){gameInitialized = data.State;});
+}
+
 
 function start(){
 	var imie = prompt("Podaj imie");
 	var dane = {
 		user: 0,
 		"function": "addPlayer",
-		//parameters: [],
-		//name: imie,
 	};
 	
 	$.post(address, JSON.stringify(dane), function(data){userId = data.user;});
@@ -62,11 +70,11 @@ setInterval(function(){
 	var coTam= {
 		user: userId,
 		"function": "wattsUp",
-		parameters: [],
+		//parameters: [],
 	};
 	
     $.post(address, JSON.stringify(coTam), function(data){console.log(data);});
-	},50000);
+	},1000);
 
 function checkTilePicture(x, y, td)
 {
@@ -75,7 +83,7 @@ function checkTilePicture(x, y, td)
 		row: x,
 		column: y,
 		"function": "choose",
-		parameters: [],
+		//parameters: [],
 	};
 	
 
@@ -176,13 +184,13 @@ function makeTable()
 
 
 
-
+checkState();
+if(gameInitialized==0){
+	initGame();
+	gameInitialized=1;
+}
 start();
 playerReady = confirm("Jestes gotowy?");
-if(playerReady == 1)
-{
-	initGame();
-}
 
 makeTable();
 
