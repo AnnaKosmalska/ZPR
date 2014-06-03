@@ -34,11 +34,11 @@ var address = "../server/new.py";
 function checkState(){
 var dane = {
 		user: userId,
-		"function": "addPlayer",
+		"function": "checkState",
 	};
-	if(gameInitialized==0){
-		$.post(address, JSON.stringify(dane), function(data){gameInitialized = data.State;});
-	}
+	
+	$.post(address, JSON.stringify(dane), function(data){gameInitialized = data.State;});
+
 }
 
 
@@ -77,7 +77,9 @@ function initGame(){
 		columns: num1,
 		rows: num2,
 	};
-	$.post(address, JSON.stringify(dane), function(data){console.log(data);});
+	if(gameInitialized==0{
+		$.post(address, JSON.stringify(dane), function(data){console.log(data);});
+	}
 }
 
 
