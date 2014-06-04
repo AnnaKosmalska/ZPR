@@ -3,11 +3,11 @@ prowadzący: Paweł Zawistowski
 zespół: Katarzyna Olszewska, Anna Wujek, Łukasz Korpal
 temat: gra wieloosobwa (MEMO)
 
-Szkielet aplikacji zrealizowanej jako cienki klient przez przeglądarkę, wykorzystujący:
+Aplikacja zrealizowana jako cienki klient przez przeglądarkę, wykorzystujący:
 HTML + JavaScript(jQuery) jako interfejs graficzny
 lighttpd + Python, boost::python + C++ jako serwer i logika aplikacji
 
-wymaga: boost, lighttpd, SCons, python (w SConstruct należy ustawić odpowiednie ścieżki do boost'a i pythona)
+wymaga na Linuxie: g++ 4.6.3, boost1_46_1, lighttpd 1.4.28, SCons v2.1.0, python 2.7.3 (w SConstruct należy ustawić odpowiednie ścieżki do boost'a i pythona), spełnienia wymagań w pliku server/wymagania,txt
 
 kompilacja: scons
 
@@ -15,12 +15,11 @@ uruchomienie serwera:
 cd server
 lighttpd -D -f lighttpd.conf
 
-testowanie:
-po wpisaniu adresu w przeglądarce http://127.0.0.1:3000 powinna pojawić się przykładowa strona, wywołująca odpowiednie funkcje
+działanie należy sprawdzać wpisując w przeglądarce 127.0.0.1:3000/memo.html
 
 ***************************************
-server - zawiera plik konfiguracyjny dla lighttpd
+server - zawiera pliki konfiguracyjne dla lighttpd oraz fascgi oraz pliki .py wykonujące funkcje w C++
 client - zawiera plik .html i pliki .js wykonywane po stronie klienta
-calculation - zawiera pliki .py i .cpp wykonywane po stronie serwera
+model - zawiera pliki .cpp i .hpp wykonywane po stronie serwera
 ***************************************
 śledzenie: https://github.com/AniaWujek/ZPR
