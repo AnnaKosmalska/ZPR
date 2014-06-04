@@ -7,7 +7,7 @@ Opierając się na nazwie akcji, skrypt uruchamia odpowiadającą mu metodę/zbi
 
 Do działania serwer potrzebuje nadanych uprawnień wykonawczych dla skryptu. 
 Wymagane są też:
-moduł FastCGI, lighttpd-enable-mod
+moduł FastCGI, lighttpd z modułem obsługującym fastcgi
 do Pythona: 
 flup 1.0.2
 wsgiref 0.1.2
