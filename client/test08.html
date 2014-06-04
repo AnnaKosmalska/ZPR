@@ -28,6 +28,9 @@ var openTiles=[];
 var picturesOpen=[];
 var address = "../server/new.py";
 
+var latestOpen1=[-1, -1, -1];
+var latestOpen2=[-1, -1, -1];
+
 
 function checkState(){	/*! pierwsza uruchamiana funkcja, sprawdza, czy uzytkownik jest pierwszy i jesli tak, to uruchamia funkcje inicjalizujaca, a jesli nie, to wywolywana jest od razu funkcja rejestrujaca gracza, a nastepnie tworzy sie widok planszy dla gracza*/
 var dane = {
@@ -110,8 +113,39 @@ setInterval(function(){		/*! wywolywana okresowo funkcja sprawdzajaca aktualny s
 	
     $.post(address, JSON.stringify(coTam), function(data){
 		console.log(data);
+		if(data.player != userId){	// to nie nasz tura, trzeba pokazac obrazki
 		
-		});
+		if(data.first[0]>=0 && data.first[1]>=0 && data.first[2]>=0 && data.second[0]>=0 && data.second[1]>=0 && data.second[2]>=0){	//jesli sa dwa obrazki do pokazania
+			var wspX1 = data.first[0];
+			var wspY1 = data.first[1];
+			var pict1 = data.first[2];
+			var tile1 = wspX1*tableWidth + wspY1;
+	
+			
+			var wspX2 = data.second[0];
+			var wspY2 = data.second[1];
+			var pict2 = data.second[2];
+			var tile2 = wspX2*tableWidth + wspY2;
+			
+			var pierwszy = document.getElementById("k"+(tile1));
+			var drugi = document.getElementById("k"+(tile2));
+			
+			pierwszy.innerHTML = "<img src='"+ pict1 +".jpg'>";
+			drugi.innerHTML = "<img src='"+ pict1 +".jpg'>";
+			
+			if(pict1 == pict2){	// dwa obrazki takie same, zostaja na zawsze
+				pierwszy.otwarty = 1;
+				drugi.otwarty = 1;
+			}
+			else{ // dwa obrazki inne, zakryja sie
+				setTimeout(closeTiles,2500);
+			}
+		}
+	
+			
+			
+		}
+	});
 },1000);
 
 function checkTile(x, y, td)	/*! funkcja wywolywana, kiedy gracz kliknie na zakryta plytke (a nie ma jeszcze dwoch odkrytych) */
@@ -170,8 +204,7 @@ function twoTilesOpen()	/*! funkcja wywolywana, kiedy mamy dwa otwarte obrazki -
 		openTiles.pop();
 		picturesOpen.pop();
 		picturesOpen.pop();
-		endTurn();
-		//setTimeout(nothing,2500);
+		setTimeout(endTurn,2500);
 	}
 	else{
 		setTimeout(closeTiles,2500);
@@ -197,7 +230,7 @@ function makeTd(tr)		/*! funkcja tworzaca plytki	 */
 {
 	var td = document.createElement("td");
 	td.innerHTML = "<img src='zakryte.png'>";
-	td.setAttribute("id", "k"+(i*100+j));
+	td.setAttribute("id", "k"+(tileNumber));
 	td.otwarty = 0;
 	td.number = tileNumber;
 	tileNumber = tileNumber + 1;

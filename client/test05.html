@@ -45,7 +45,7 @@ var dane = {
 function start(){
 	var imie = prompt("Podaj imie");
 	var dane = {
-		user: 0,
+		user: userId,
 		"function": "addPlayer",
 	};
 	
@@ -85,11 +85,10 @@ setInterval(function(){
 function checkTilePicture(x, y, td)
 {
 	var tileInfo= {
-		user: 1,
+		user: userId,
 		row: x,
 		column: y,
 		"function": "choose",
-		//parameters: [],
 	};
 	
 
@@ -114,7 +113,7 @@ function checkTilePicture(x, y, td)
 							
 						}
 		}
-	}); // chodzilo bez srednika, sprawdzic z
+	});
 	
 	
 
@@ -123,7 +122,7 @@ function checkTilePicture(x, y, td)
 
 function twoTilesOpen()	// mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
 {
-	if(picturesOpen[0]==picturesOpen[1]){ // otwarte obrazki sa takie same - DOROBIC!!!!
+	if(picturesOpen[0]==picturesOpen[1]){
 		openTiles[0].otwarty = 1;
 		openTiles[1].otwarty = 1;
 		openTilesCount--;
@@ -132,10 +131,17 @@ function twoTilesOpen()	// mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
 		openTiles.pop();
 		picturesOpen.pop();
 		picturesOpen.pop();
+		
 	}
 	else{
 		setTimeout(closeTiles,1250);
 	}
+	
+	var end= {
+		user: userId,
+		"function": "endTurn",
+	};
+	$.post(address, JSON.stringify(end), function(data){console.log(data);});
 }
 
 function closeTiles()
