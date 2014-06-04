@@ -1,0 +1,13 @@
+Serwer został zrealizowany na podstawie lighttpd.
+Wykorzystywany przez niego protokół stanowi FastCGI, ze względu na możliwości obsługi większej ilości żądań od klientów w tym samym czasie.
+Dodatkowo, użycie w nim jednego tylko wątku umożliwiło proste ciągłe użycie interpretera Pythona. Dzięki temu dane przetrzymywane w importowanej przez niego bibliotece modułu, zawierającej dane na temat rozgrywki, nie były usuwane wraz z każdym wywołaniem obługi klienta.
+Głównym elementem serwera jest skrypt new.py, pozwalający na komunikację między klientem (javascript) a modelem (C++).
+Do komunikacji klient-serwer służy struktura JSON, której zawartość różni się w zależności od rządania, jednak zawsze zawiera identyfikator użytkownika (dla użytkowników niezarejestrowanych wynoszący 0) i nazwę akcji.
+Opierając się na nazwie akcji, skrypt uruchamia odpowiadającą mu metodę/zbiór metod, a na podstawie otrzymanych wyników tworzy strukturę przekazywaną z powrotem do klienta.
+
+Do działania serwer potrzebuje nadanych uprawnień wykonawczych dla skryptu. 
+Wymagane są też:
+moduł FastCGI, lighttpd z modułem obsługującym fastcgi
+do Pythona: 
+flup 1.0.2
+wsgiref 0.1.2

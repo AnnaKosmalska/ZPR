@@ -7,8 +7,8 @@ fastcgi.server = (
 	(
 		"python-fcgi" =>
 		(
-		"socket" => "/home/ania/ZPR/socket",
-		"bin-path" => "/home/ania/ZPR/server/new.py",
+		"socket" => "/path/for/socket",
+		"bin-path" => "/path/to/project/fcgi/app.py",
 		"check-local" => "disable",
 		"max-procs" => 1,
 		)
