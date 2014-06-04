@@ -224,8 +224,8 @@ function makeTable()	/*! funkcja tworzaca plansze i wypelniajaca ja plytkami */
 	};
 	
 	$.post(address, JSON.stringify(dane), function(data){
-		tableWidth = data.x;
-		tableHeight = data.y;
+		tableWidth = data.sizeX;
+		tableHeight = data.sizeY;
 	
 		for(i=1; i<=tableHeight; i++)
 		{
