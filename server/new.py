@@ -62,7 +62,7 @@ def App(environ, start_response):
 
 	if function == "choose":
 	##Wybor obrazka. Przekazuje id odebrane od klienta, rzutuje otrzymany od klienta string.
-		x = model.choose(auser_id, int(orders["row"]), int(orders["column"]))
+		x = model.choose(auser_id, int(orders["column"]), int(orders["row"]))
 		##Zwraca id obrazka wybranego przez uzytkownika
 		x = dict(picture=x)
 
@@ -73,7 +73,7 @@ def App(environ, start_response):
 
 	if function == "initGame":
 		##Rozpoczecie gry. Rzutuje otrzymany od klienta string
-		x = model.initGame(int(orders["rows"]), int(orders["columns"]))
+		x = model.initGame(int(orders["columns"]), int(orders["rows"]))
 
 		x = dict(status=x)
 
