@@ -46,7 +46,7 @@ int Board::addPlayer(std::string name)
 {
   if(state == 1) return -2;
   if(playersNumber() >= MAX_PLAYERS)
-    return -5;
+    return -3;
   players.push_back(Player(name, playersNumber()));
   return playersNumber()-1;
 }
@@ -85,7 +85,7 @@ int Board::choose(int player, int x, int y)
 	  players[player].incScore(1);
 	  if(players[player].getScore() > winner)
 	    winner = players[player].getScore();
-	  //players[player].addToDeck(firstPicked);
+	  players[player].addToDeck(firstPicked);
 	  removePair();
 	}     
       return ret;
@@ -101,9 +101,9 @@ void Board::removePair()
   it = board.find(std::pair<int, int>(secondX, secondY));
   if(it != board.end())
     it->second = -123;
-  //all-=2;
-  //if(all == 0)
-  //state = 2;
+  all-=2;
+  if(all == 0)
+    state = 2;
 }
 
 int Board::endTurn()

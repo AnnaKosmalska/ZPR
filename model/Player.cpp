@@ -10,7 +10,6 @@ Player::Player(std::string _name, int _ID)
 
 Player::~Player()
 {
-  delete deck;
 }
 
 void Player::incScore(int points)
@@ -20,7 +19,7 @@ void Player::incScore(int points)
 
 void Player::addToDeck(int newTile)
 {
-  deck->addTile(newTile);
+   deck.addTile(newTile);
 }
 
 
@@ -29,7 +28,7 @@ int Player::getID() const
   return ID;
 }
 
-Deck* Player::getDeck() const
+Deck Player::getDeck() const
 {
   return deck;
 }

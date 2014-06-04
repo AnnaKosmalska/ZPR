@@ -3,12 +3,12 @@
 #include "Deck.hpp"
 
 Deck::Deck()
-{
-  
-}
+{}
 
 Deck::~Deck()
-{}
+{
+  deck.clear();
+}
 
 void Deck::addTile(int newTile)
 {

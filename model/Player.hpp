@@ -21,7 +21,7 @@ private:
   /*!<id gracza*/
   int score;
   /*!<wynik gracza*/
-  Deck* deck;
+  Deck deck;
   /*!<karty zdobyte przez gracza*/ 
 
 public:
@@ -47,7 +47,7 @@ public:
 
     \return karty gracza
   */
-  Deck* getDeck() const;
+  Deck getDeck() const;
   /*! \brief pobranie wyniku gracza
 
     \return wynik
