@@ -29,7 +29,7 @@ var picturesOpen=[];
 var address = "../server/new.py";
 
 
-function checkState(){	// pierwsza uruchamiana funkcja, sprawdza, czy uzytkownik jest pierwszy i jesli tak, to kaze mu wybrac wymiary planszy, a jesli nie, to wywolywana jest od razu funkcja rejestrujaca gracza, a nastepnie tworzy sie widok planszy dla gracza
+function checkState(){	/*! pierwsza uruchamiana funkcja, sprawdza, czy uzytkownik jest pierwszy i jesli tak, to uruchamia funkcje inicjalizujaca, a jesli nie, to wywolywana jest od razu funkcja rejestrujaca gracza, a nastepnie tworzy sie widok planszy dla gracza*/
 var dane = {
 		user: userId,
 		"function": "checkState",
@@ -49,7 +49,7 @@ var dane = {
 }
 
 
-function endTurn(){		// funkcja wysyla do serwera informacje, ze gracz skonczyl swoja ture
+function endTurn(){		/*! funkcja wysyla do serwera informacje, ze gracz skonczyl swoja ture */
 	var end= {
 			user: userId,
 			"function": "endTurn",
@@ -59,7 +59,7 @@ function endTurn(){		// funkcja wysyla do serwera informacje, ze gracz skonczyl 
 }
 
 
-function start(){		// funkcja rejestrujaca gracza
+function start(){		/*! funkcja rejestrujaca gracza*/
 		if(gameInitialized !== 1){
 			var imie = prompt("Podaj imie");
 			var dane = {
@@ -74,7 +74,7 @@ function start(){		// funkcja rejestrujaca gracza
 
 
 
-function initGame(){	// funkcja inicjalizujaca gre, uzytkownik jest proszony o podanie wymiarow planszy, kiedy gra juz sie zainicjuje wywoluje sie funkcja rejestrujaca, a nastepnie tworzy sie widok planszy dla gracza
+function initGame(){	/*! funkcja inicjalizujaca gre, uzytkownik jest proszony o podanie wymiarow planszy, kiedy gra juz sie zainicjuje wywoluje sie funkcja rejestrujaca, a nastepnie tworzy sie widok planszy dla gracza*/
 	tableWidth = prompt("Podaj szerokosc planszy: ");
 	var num1 = parseInt(tableWidth);
 	tableHeight = prompt("Podaj wysokosc planszy: ");
@@ -102,7 +102,7 @@ function initGame(){	// funkcja inicjalizujaca gre, uzytkownik jest proszony o p
 }
 
 
-setInterval(function(){		// wywolywana okresowo funkcja sprawdzajaca aktualny stan gry (status, czyja tura, odsloniete plytki, tabela wynikow)
+setInterval(function(){		/*! wywolywana okresowo funkcja sprawdzajaca aktualny stan gry (status, czyja tura, odsloniete plytki, tabela wynikow) */
 	var coTam= {
 		user: userId,
 		"function": "wattsUp",
@@ -111,7 +111,7 @@ setInterval(function(){		// wywolywana okresowo funkcja sprawdzajaca aktualny st
     $.post(address, JSON.stringify(coTam), function(data){console.log(data); });
 	},1000);
 
-function checkTile(x, y, td)	// funkcja wywolywana, kiedy gracz kliknie na zakryta plytke (a nie ma jeszcze dwoch odkrytych)
+function checkTile(x, y, td)	/*! funkcja wywolywana, kiedy gracz kliknie na zakryta plytke (a nie ma jeszcze dwoch odkrytych) */
 {
 
 	var coTam= {
@@ -119,11 +119,11 @@ function checkTile(x, y, td)	// funkcja wywolywana, kiedy gracz kliknie na zakry
 		"function": "wattsUp",
 	};
 	
-    $.post(address, JSON.stringify(coTam), function(data){	// zapytanie serwera, czy to tura danego gracza
+    $.post(address, JSON.stringify(coTam), function(data){	/*! zapytanie serwera, czy to tura danego gracza */
 		if(data.player != userId){
 			alert("To nie Twoja tura!");
 		}
-		else{		//nasza tura, mozna sprawdzac
+		else{		/* nasza tura, mozna sprawdzac */
 			var tileInfo= {
 			user: userId,
 			row: x,
@@ -132,7 +132,7 @@ function checkTile(x, y, td)	// funkcja wywolywana, kiedy gracz kliknie na zakry
 			};
 		
 
-			$.post(address, JSON.stringify(tileInfo), function(data){	// wybor plytki i zapytanie serwera, jaki jest tam obrazek
+			$.post(address, JSON.stringify(tileInfo), function(data){	/*! wybor plytki i zapytanie serwera, jaki jest tam obrazek */
 			
 				console.log(data);
 				obrazek = data.picture;
@@ -142,7 +142,7 @@ function checkTile(x, y, td)	// funkcja wywolywana, kiedy gracz kliknie na zakry
 				openTiles.push(td);
 							
 				openTilesCount++;
-				if(openTilesCount==2){	// sa otwarte dwa obrazki
+				if(openTilesCount==2){	/* sa otwarte dwa obrazki */
 					twoTilesOpen();
 								
 				}
@@ -156,7 +156,7 @@ function checkTile(x, y, td)	// funkcja wywolywana, kiedy gracz kliknie na zakry
 
 }
 
-function twoTilesOpen()	// funkcja wywolywana, kiedy mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
+function twoTilesOpen()	/*! funkcja wywolywana, kiedy mamy dwa otwarte obrazki - zakrywamy lub zostawiamy */
 {
 	if(picturesOpen[0]==picturesOpen[1]){
 		openTiles[0].otwarty = 1;
@@ -176,7 +176,7 @@ function twoTilesOpen()	// funkcja wywolywana, kiedy mamy dwa otwarte obrazki - 
 	
 }
 
-function closeTiles()	// funkcja zakrywajaca z powrotem dwie odkryte plytki
+function closeTiles()	/*! funkcja zakrywajaca z powrotem dwie odkryte plytki */
 {
 	for(i=openTiles.length-1; i>=0; i--){
 	
@@ -189,7 +189,7 @@ function closeTiles()	// funkcja zakrywajaca z powrotem dwie odkryte plytki
 	endTurn();
 }
 
-function makeTd(tr)		// funkcja tworzaca plytki	
+function makeTd(tr)		/*! funkcja tworzaca plytki	 */
 {
 	var td = document.createElement("td");
 	td.innerHTML = "<img src='zakryte.png'>";
@@ -212,7 +212,7 @@ function makeTd(tr)		// funkcja tworzaca plytki
 	tr.appendChild(td);
 }
 
-function makeTable()	// funkcja tworzaca plansze i wypelniajaca ja plytkami
+function makeTable()	/*! funkcja tworzaca plansze i wypelniajaca ja plytkami */
 {
 	var table = document.getElementById("tablica");
 	
