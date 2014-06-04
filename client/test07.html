@@ -108,8 +108,13 @@ setInterval(function(){		/*! wywolywana okresowo funkcja sprawdzajaca aktualny s
 		"function": "wattsUp",
 	};
 	
-    $.post(address, JSON.stringify(coTam), function(data){console.log(data); });
-	},1000);
+    $.post(address, JSON.stringify(coTam), function(data){
+		console.log(data);
+		if(
+		
+		
+		});
+},1000);
 
 function checkTile(x, y, td)	/*! funkcja wywolywana, kiedy gracz kliknie na zakryta plytke (a nie ma jeszcze dwoch odkrytych) */
 {
