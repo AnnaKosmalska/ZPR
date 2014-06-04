@@ -36,8 +36,9 @@ var dane = {
 		user: 0,
 		"function": "addPlayer",
 	};
-	
-	$.post(address, JSON.stringify(dane), function(data){gameInitialized = data.State;});
+	if(gameInitialized==0){
+		$.post(address, JSON.stringify(dane), function(data){gameInitialized = data.State;});
+	}
 }
 
 

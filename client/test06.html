@@ -33,19 +33,41 @@ var address = "../server/new.py";
 
 function checkState(){
 var dane = {
-		user: 0,
-		"function": "addPlayer",
+		user: userId,
+		"function": "checkState",
 	};
 	
-	$.post(address, JSON.stringify(dane), function(data){gameInitialized = data.State;});
+	$.post(address, JSON.stringify(dane), function(data){
+		gameInitialized = data.State;
+		if(gameInitialized==0){
+			initGame();
+			gameInitialized=1;
+		}
+		start();
+
+		makeTable();
+		
+		});
+
+}
+
+
+function endTurn(){
+	var end= {
+			user: userId,
+			"function": "endTurn",
+		};
+		
+		$.post(address, JSON.stringify(end), function(data){console.log(data);});
 }
 
 
 function start(){
 	var imie = prompt("Podaj imie");
 	var dane = {
-		user: 0,
+		user: userId,
 		"function": "addPlayer",
+		name: imie,
 	};
 	
 	$.post(address, JSON.stringify(dane), function(data){userId = data.user;});
@@ -56,70 +78,86 @@ function start(){
 
 function initGame(){
 	tableWidth = prompt("Podaj szerokosc planszy: ");
+	var num1 = parseInt(tableWidth);
 	tableHeight = prompt("Podaj wysokosc planszy: ");
+	var num2 = parseInt(tableHeight);
+	
 	var dane= {
 		'user': userId,
 		'function': "initGame",
-		columns: tableWidth,
-		rows: tableHeight,
+		columns: num1,
+		rows: num2,
 	};
-	$.post(address, JSON.stringify(dane), function(data){console.log(data);});
+	
+	if(gameInitialized==0){
+		$.post(address, JSON.stringify(dane), function(data){console.log(data);});
+	}
 }
 
 
 setInterval(function(){
-	var address = "../server/new.py";
 	var coTam= {
 		user: userId,
 		"function": "wattsUp",
-		//parameters: [],
 	};
 	
     $.post(address, JSON.stringify(coTam), function(data){console.log(data);});
 	},1000);
 
-function checkTilePicture(x, y, td)
+function checkTile(x, y, td)
 {
-	var tileInfo= {
-		user: 1,
-		row: x,
-		column: y,
-		"function": "choose",
-		//parameters: [],
+
+	var coTam= {
+		user: userId,
+		"function": "wattsUp",
 	};
 	
-
-	$.post(address, JSON.stringify(tileInfo), function(data){
-	
-		console.log(data);
-		obrazek = data.picture;
-		if(obrazek == "nie")
-		{
+    $.post(address, JSON.stringify(coTam), function(data){
+		if(data.player != userId){
 			alert("To nie Twoja tura!");
 		}
-		else
-		{
-			picturesOpen.push(obrazek);
-			td.innerHTML = "<img src='"+ obrazek +".png'>";
-						td.otwarty = 1;
-						openTiles.push(td);
-						
-						openTilesCount++;
-						if(openTilesCount==2){	// sa otwarte dwa obrazki
-							twoTilesOpen();
-							
-						}
-		}
-	}); // chodzilo bez srednika, sprawdzic z
-	
-	
+		else{		//nasza tura, mozna sprawdzac
+			var tileInfo= {
+			user: userId,
+			row: x,
+			column: y,
+			"function": "choose",
+			};
+		
 
+			$.post(address, JSON.stringify(tileInfo), function(data){
+			
+				console.log(data);
+				obrazek = data.picture;
+				if(obrazek == "nie")
+				{
+					alert("To nie Twoja tura!");
+				}
+				else
+				{
+					picturesOpen.push(obrazek);
+					td.innerHTML = "<img src='"+ obrazek +".png'>";
+					td.otwarty = 1;
+					openTiles.push(td);
+								
+					openTilesCount++;
+					if(openTilesCount==2){	// sa otwarte dwa obrazki
+						twoTilesOpen();
+									
+					}
+				}
+			});
+		}
+	
+	
+	});
+	
 
 }
 
 function twoTilesOpen()	// mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
 {
-	if(picturesOpen[0]==picturesOpen[1]){ // otwarte obrazki sa takie same - DOROBIC!!!!
+	if(picturesOpen[0]==picturesOpen[1]){
 		openTiles[0].otwarty = 1;
 		openTiles[1].otwarty = 1;
 		openTilesCount--;
@@ -128,10 +166,13 @@ function twoTilesOpen()	// mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
 		openTiles.pop();
 		picturesOpen.pop();
 		picturesOpen.pop();
+		setTimeout(endTurn,2500);
 	}
 	else{
-		setTimeout(closeTiles,1250);
+		setTimeout(closeTiles,2500);
 	}
+	
+	
 }
 
 function closeTiles()
@@ -144,6 +185,7 @@ function closeTiles()
 		openTiles.pop();
 		picturesOpen.pop();
 	}
+	endTurn();
 }
 
 function makeTd(tr)
@@ -159,7 +201,7 @@ function makeTd(tr)
 			if(td.otwarty == 0){	// obrazek zakryty
 				var kolumna = td.number % tableWidth;
 				var rzad = (td.number - kolumna)/tableWidth;
-				checkTilePicture(rzad, kolumna, td);
+				checkTile(rzad, kolumna, td);
 				
 			
 			}
@@ -184,17 +226,17 @@ function makeTable()
 	}
 }
 
+// koniec deklaracji, poczatek wywolan
 
 
 checkState();
-if(gameInitialized==0){
-	initGame();
-	gameInitialized=1;
-}
-start();
-playerReady = confirm("Jestes gotowy?");
+//if(gameInitialized==0){
+//	initGame();
+//	gameInitialized=1;
+//}
+//start();
 
-makeTable();
+//makeTable();
 
 </script>
 
