@@ -57,7 +57,15 @@ public:
     \param points liczba punktow
   */
   void incScore(int points);
-  
+  /*! \brief pobranie nazwy gracza
+
+    \return nazwa gracza
+  */
+  std::string getName()
+
+  {
+    return name;
+  }
 };
 
 #endif

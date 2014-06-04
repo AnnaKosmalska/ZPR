@@ -84,7 +84,7 @@ int Board::choose(int player, int x, int y)
 	{
 	  players[player].incScore(1);
 	  if(players[player].getScore() > winner)
-	    winner = players.[player].getScore();
+	    winner = players[player].getScore();
 	  //players[player].addToDeck(firstPicked);
 	  removePair();
 	}     
@@ -188,8 +188,9 @@ int Board::getWinner(int player)
 {
   if(player >= playersNumber())
     return -1;
-  if(player.getScore() == winner)
+  if(players[player].getScore() == winner)
     return 1;
+  return 0;
 }
 
 
