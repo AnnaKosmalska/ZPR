@@ -101,7 +101,7 @@ function initGame(){
 		rows: num2,
 	};
 	
-	if(gameInitialized==0){
+	if(gameInitialized==-1){
 		$.post(address, JSON.stringify(dane), function(data){console.log(data);});
 	}
 }
@@ -113,7 +113,7 @@ setInterval(function(){
 		"function": "wattsUp",
 	};
 	
-    $.post(address, JSON.stringify(coTam), function(data){console.log(data); gameInitialized=data.status});
+    $.post(address, JSON.stringify(coTam), function(data){console.log(data); });
 	},1000);
 
 function checkTile(x, y, td)
