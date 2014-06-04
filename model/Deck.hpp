@@ -1,6 +1,8 @@
-/**
-   Klasa reprezentuje talię, jaką ma zdobytą gracz
- */
+/*! \file Deck.hpp
+  \brief Plik naglowkowy klasy Deck reprezentujacej zbior kart
+
+  \author Anna Wujek
+*/
 
 #ifndef DECK
 #define DECK
@@ -8,22 +10,32 @@
 #include "Tile.hpp"
 #include <vector>
 
+/*! class Deck
+  \brief reprezentuje talie kart
+*/
 class Deck
 {
 private:
-  // lista kart zdobytych
   std::vector<Tile> deck;
-
+  /*!<lista kart*/
 public:
-  // konstruktor
+  /*! \brief konstruktor
+   */
   Deck();
-  // destruktor
+  /*! \brief destruktor
+   */
   ~Deck();
-  // dodanie karty do talii
+  /*! \brief dodanie karty do talii
+    \param newTile id nowej karty
+  */
   void addTile(int newTile);
-  // liczba zdobytych par
+  /*! \brief pobranie liczby zdobytych par
+    \return liczba par
+  */
   int getNumber() const;
-  //
+  /*! \brief pobranie zdobytych par
+    \return zdobyte pary
+  */
   std::vector<int> getTiles() const;
 };
 

@@ -1,3 +1,6 @@
+/*! \file Board.cpp
+  \brief Plik naglowkowy klasy Board reprezentujacej plansze.
+*/
 
 #include "Board.hpp"
 #include "Constants.hpp"
@@ -5,13 +8,17 @@
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/variate_generator.hpp>
 
+
 Board::Board()
 {
-  //sizeX=1;
-  //sizeY=1;
-  //initBoard();
-  state = 0;
+  state = -1;
   currentPlayer = 0;
+  firstPicked = -1;
+  firstX = -1;
+  firstY = -1;
+  secondPicked = -1;
+  secondX = -1;
+  secondY = -1;
 }
 
 Board::~Board()
@@ -22,7 +29,7 @@ Board::~Board()
 
 void Board::clearBoard()
 {
-  state = 0;
+  state = -1;
   currentPlayer = 0;
   board.clear();
 }
@@ -35,9 +42,9 @@ void Board::clearPlayers()
 
 int Board::addPlayer(std::string name)
 {
-  if(state == 0) return -2;
+  if(state == 1) return -2;
   if(playersNumber() >= MAX_PLAYERS)
-    return -2;
+    return -5;
   players.push_back(Player(name, playersNumber()));
   return playersNumber()-1;
 }
@@ -49,12 +56,13 @@ int Board::getTile(int x, int y) const
 
 int Board::choose(int player, int x, int y)
 {
+  state = 1;
   if(playersNumber()==0)
     return -300;
   if(player != currentPlayer)
     return -200;
   if(x>=sizeX || y>=sizeY)
-    return -100;
+   return -100;
   if(firstPicked == -1)
     {
       firstPicked = getTile(x, y);
@@ -101,14 +109,17 @@ int Board::endTurn()
   return currentPlayer;
 }
 
-void Board::initGame(int x, int y)
+int Board::initGame(int x, int y)
 {
+  if(state != -1)
+    return 1;
   sizeX = x;
   sizeY = y;
   firstPicked = -1;
   secondPicked = -1;
   initBoard();
-  state = 1;
+  state = 0;
+  return 1;
 }
 
 void Board::endGame()
@@ -126,20 +137,15 @@ int Board::playersNumber()
 
 void Board::initBoard()
 {
-  boost::mt19937 gen;
-  
-
-  
+  boost::mt19937 gen;  
   std::vector<int> tiles;
   int fullSize = sizeX*sizeY/2;
   for(int i = 0; i < fullSize; ++i)
     {
       tiles.push_back(i);
-      tiles.push_back(i);
-      
+      tiles.push_back(i);      
     }
   fullSize*=2;
-
   
   for(int i = 0; i < sizeX; ++i)
     {
