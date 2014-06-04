@@ -11,7 +11,6 @@
 
 Board::Board()
 {
-  winner = 0;
   state = -1;
   currentPlayer = 0;
   firstPicked = -1;
@@ -20,7 +19,6 @@ Board::Board()
   secondPicked = -1;
   secondX = -1;
   secondY = -1;
-  all = -1;
 }
 
 Board::~Board()
@@ -58,8 +56,6 @@ int Board::getTile(int x, int y) const
 
 int Board::choose(int player, int x, int y)
 {
-  if(player >= playersNumber())
-    return -400;
   state = 1;
   if(playersNumber()==0)
     return -300;
@@ -80,12 +76,9 @@ int Board::choose(int player, int x, int y)
       secondX=x;
       secondY=y;
       int ret = secondPicked;
-      if(firstPicked == secondPicked && firstPicked != -123)
+      if(firstPicked == secondPicked)
 	{
 	  players[player].incScore(1);
-	  if(players[player].getScore() > winner)
-	    winner = players.[player].getScore();
-	  //players[player].addToDeck(firstPicked);
 	  removePair();
 	}     
       return ret;
@@ -101,9 +94,6 @@ void Board::removePair()
   it = board.find(std::pair<int, int>(secondX, secondY));
   if(it != board.end())
     it->second = -123;
-  //all-=2;
-  //if(all == 0)
-  //state = 2;
 }
 
 int Board::endTurn()
@@ -125,7 +115,6 @@ int Board::initGame(int x, int y)
     return 1;
   sizeX = x;
   sizeY = y;
-  all = sizeY*sizeX;
   firstPicked = -1;
   secondPicked = -1;
   initBoard();
@@ -137,18 +126,8 @@ void Board::endGame()
 {
   clearPlayers();
   clearBoard();
-  state = -1;
-  sizeX = 0;
-  sizeY = 0;
+  state = 3;
   currentPlayer = 0;
-  firstPicked = -1;
-  secondPicked = -1;
-  firstX = -1;
-  firstY = -1;
-  secondX = -1;
-  secondY = -1;
-  all = -1;
-  winner = 0;
 }
 
 int Board::playersNumber()
@@ -158,7 +137,7 @@ int Board::playersNumber()
 
 void Board::initBoard()
 {
-  boost::mt19937 gen(static_cast<int>(std::time(0)));  
+  boost::mt19937 gen;  
   std::vector<int> tiles;
   int fullSize = sizeX*sizeY/2;
   for(int i = 0; i < fullSize; ++i)
@@ -182,14 +161,6 @@ void Board::initBoard()
 	  tiles[pickedIndex] = tiles[--fullSize];
 	}
     }
-}
-
-int Board::getWinner(int player)
-{
-  if(player >= playersNumber())
-    return -1;
-  if(player.getScore() == winner)
-    return 1;
 }
 
 

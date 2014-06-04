@@ -48,6 +48,10 @@ private:
   /*!<stan gry*/
   int currentPlayer;
   /*!<aktualny gracz*/
+  int all;
+  /*!<liczba kart pozostalych na stole*/
+  int winner;
+  //*!<najwyzszy wynik w grze*
 
   /*! \brief konstruktor
 
@@ -226,6 +230,19 @@ public:
   {
     return sizeY;
   }
+  /*! \brief pobranie nazwy gracza
+
+    \return nazwa gracza
+  */
+  std::string getName(int player)
+  {
+    return players[player].getName();
+  }
+  /*! \brief czy gracz jest zwyciezca
+
+    \return zwyciestwo
+  */
+  int getWinner(int player);
   
 };
 
@@ -344,7 +361,7 @@ BOOST_PYTHON_MODULE(model)
   boost::python::def("endTurn", endTurn);
   boost::python::def("getScore", getScore);
   boost::python::def("getSizeX", getSizeX);
-  boost::python::def("getSizeY"m getSizeY);
+  boost::python::def("getSizeY", getSizeY);
 }
 
 #endif
