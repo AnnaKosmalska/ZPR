@@ -56,7 +56,6 @@ def App(environ, start_response):
 		data = "Nowy"
 		##Niezbedne kodowanie na utf8 przy przekazywaniu do C++.
 		data = data.encode('utf8')
-
 		x = model.addPlayer(data)
 		x = dict(user=x)
 
@@ -74,7 +73,6 @@ def App(environ, start_response):
 	if function == "initGame":
 		##Rozpoczecie gry. Rzutuje otrzymany od klienta string
 		x = model.initGame(int(orders["columns"]), int(orders["rows"]))
-
 		x = dict(status=x)
 
 	if function == "endGame":
@@ -91,6 +89,12 @@ def App(environ, start_response):
 
 	if function == "getSize":
 		x = dict(sizeX=model.getSizeX(), sizeY=model.getSizeY())
+
+	if function == "getWinners":
+		x = dict(player1=model.getWinner(1), player2=model.getWinner(2), player3=model.getWinner(3), player4=model.getWinner(4))
+
+	if function == "getName":
+		x = dict(player1= model.getName(1).encode('utf8'), player2= model.getName(2).encode('utf8'), player3= model.getName(3).encode('utf8'), player4= model.getName(4).encode('utf8'))
 
 	if function == "wattsUp":
 		##Zwraca strukture danych zawierajaca informacje na temat biezacej rozgrywki.
