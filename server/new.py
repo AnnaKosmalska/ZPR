@@ -89,6 +89,9 @@ def App(environ, start_response):
 		x = model.getState()
 		x = dict(user_id=auser_id,State=x)
 
+	if function == "getSize":
+		x = dict(sizeX=model.getSizeX(), sizeY=model.getSizeY())
+
 	if function == "wattsUp":
 		##Zwraca strukture danych zawierajaca informacje na temat biezacej rozgrywki.
 		x = dict(score = UpDate("GetScore",  auser_id), status=UpDate("GetState"), player=UpDate("getCurrentPlayer"), testfirst=model.getFirstX(), first=[model.getFirstX(), model.getFirstY(), model.getFirstPicked()], second=[model.getSecondX(), model.getSecondY(), model.getSecondPicked()])
