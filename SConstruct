@@ -36,7 +36,7 @@ else:
 #build C++ library
 cpplib = env.SharedLibrary( target = 'model', source = [Glob('model/*.cpp')])
 if(platform.system() == "Linux"):
-   target = 'model/model.so'
+   target = 'server/model.so'
 elif(platform.system() == "Windows"):
-   target = 'model/model.pyd'
+   target = 'server/model.pyd'
 env.Command(target, cpplib, copyLibBuilder )
