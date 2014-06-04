@@ -210,22 +210,6 @@ public:
   {
     return players[player].getScore();
   }
-  /*! \brief pobranie wymiaru plaszy X
-
-    \return X planszy
-  */
-  int getSizeX()
-  {
-    return sizeX;
-  }
-  /*! \brief pobranie wymiaru planszy Y
-
-    \return Y planszy
-  */
-  int getSizeY()
-  {
-    return sizeY;
-  }
   
 };
 
@@ -313,18 +297,6 @@ int endTurn()
 {
   return Board::getInstance().endTurn()+1;
 }
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getSizeX()
-{
-  return Board::getInstance().getSizeX();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getSizeY()
-{
-  return Board::getInstance().getSizeY();
-}
 /*! \brief modul pythona sluzacy do komunikacji z serwerem
  */
 BOOST_PYTHON_MODULE(model)
@@ -343,8 +315,6 @@ BOOST_PYTHON_MODULE(model)
   boost::python::def("getSecondY", getSecondY);
   boost::python::def("endTurn", endTurn);
   boost::python::def("getScore", getScore);
-  boost::python::def("getSizeX", getSizeX);
-  boost::python::def("getSizeY"m getSizeY);
 }
 
 #endif
