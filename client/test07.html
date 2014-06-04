@@ -42,13 +42,13 @@ var dane = {
 		gameInitialized = data.State;
 		if(gameInitialized==-1){
 			initGame();
-			gameInitialized=0;
 		}
-		start();
+		else{
+			start();
 
-		makeTable();
-		
-		});
+			makeTable();
+		}
+	});
 
 }
 
@@ -73,7 +73,7 @@ function start(){
     $.post(address, JSON.stringify(coTam), function(data){
 		console.log(data);
 		gameInitialized=data.status;
-		if(gameInitialized != 1){
+		if(gameInitialized !== 1){
 			var imie = prompt("Podaj imie");
 			var dane = {
 				user: userId,
@@ -102,7 +102,17 @@ function initGame(){
 	};
 	
 	if(gameInitialized==-1){
-		$.post(address, JSON.stringify(dane), function(data){console.log(data);});
+		$.post(address, JSON.stringify(dane), function(data){
+			console.log(data);
+			start();
+			makeTable();
+			
+		});
+	}
+	else{
+		start();
+
+		makeTable();
 	}
 }
 
