@@ -122,14 +122,19 @@ int Board::endTurn()
 int Board::initGame(int x, int y)
 {
   if(state != -1)
-    return 1;
-  sizeX = x;
-  sizeY = y;
-  all = sizeY*sizeX;
-  firstPicked = -1;
-  secondPicked = -1;
-  initBoard();
-  state = 0;
+    return -1;
+  {
+    boost::mutex::scoped_lock scoped_lock(initMutex);
+    if(state != -1)
+      return -1;
+    sizeX = x;
+    sizeY = y;
+    all = sizeY*sizeX;
+    firstPicked = -1;
+    secondPicked = -1;
+    initBoard();
+    state = 0;
+  }
   return 1;
 }
 

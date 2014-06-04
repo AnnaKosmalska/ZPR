@@ -13,6 +13,7 @@
 #include <map>
 #include <boost/python.hpp>
 #include <string>
+#include <boost/thread/mutex.hpp>
 
 /*! \class Board
   \brief reprezentuje plansze gry
@@ -51,7 +52,9 @@ private:
   int all;
   /*!<liczba kart pozostalych na stole*/
   int winner;
-  //*!<najwyzszy wynik w grze*
+  /*!<najwyzszy wynik w grze*/
+  boost::mutex initMutex;
+  /*!<mutex sluzacy ochronie inicjowania gry (krytyczne aby wykonal je tylko jeden gracz)*/
 
   /*! \brief konstruktor
 
@@ -342,6 +345,18 @@ int getSizeY()
 {
   return Board::getInstance().getSizeY();
 }
+/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
+ */
+std::string getName(int player)
+{
+  return Board::getInstance().getName(player-1);
+}
+/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
+ */
+int getWinner(int player)
+{
+  return Board::getInstance().getWinner(player-1);
+}
 /*! \brief modul pythona sluzacy do komunikacji z serwerem
  */
 BOOST_PYTHON_MODULE(model)
@@ -362,6 +377,8 @@ BOOST_PYTHON_MODULE(model)
   boost::python::def("getScore", getScore);
   boost::python::def("getSizeX", getSizeX);
   boost::python::def("getSizeY", getSizeY);
+  boost::python::def("getName", getName);
+  boost::python::def("getWinner", getWinner);
 }
 
 #endif
