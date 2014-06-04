@@ -12,27 +12,24 @@ IMG { height: 50px; width: 50px }
 </body>
 <script type="text/javascript" src="jquery-1.11.0.js"></script>
 <script>
-// ustawiane na wejsciu
+// zmienne ustawiane przez uzytkownika
 var tableWidth=4;
 var tableHeight=4;
 
-// dostaje od serwera
+//zmienne, ktore dostaje od serwera
 var userId = 0;
-
 var gameInitialized=-1;
 var gameStarted = 0;
 
-// uzywane w srodku zmienne globalne
+// wlasne zmienne globalne
 var tileNumber=0;
 var openTilesCount=0;
 var openTiles=[];
 var picturesOpen=[];
-var playerReady=false;
 var address = "../server/new.py";
 
 
-
-function checkState(){
+function checkState(){	// pierwsza uruchamiana funkcja, sprawdza, czy uzytkownik jest pierwszy i jesli tak, to kaze mu wybrac wymiary planszy, a jesli nie, to wywolywana jest od razu funkcja rejestrujaca gracza, a nastepnie tworzy sie widok planszy dla gracza
 var dane = {
 		user: userId,
 		"function": "checkState",
@@ -45,7 +42,6 @@ var dane = {
 		}
 		else{
 			start();
-
 			makeTable();
 		}
 	});
@@ -53,7 +49,7 @@ var dane = {
 }
 
 
-function endTurn(){
+function endTurn(){		// funkcja wysyla do serwera informacje, ze gracz skonczyl swoja ture
 	var end= {
 			user: userId,
 			"function": "endTurn",
@@ -63,7 +59,7 @@ function endTurn(){
 }
 
 
-function start(){
+function start(){		// funkcja rejestrujaca gracza
 		if(gameInitialized !== 1){
 			var imie = prompt("Podaj imie");
 			var dane = {
@@ -78,7 +74,7 @@ function start(){
 
 
 
-function initGame(){
+function initGame(){	// funkcja inicjalizujaca gre, uzytkownik jest proszony o podanie wymiarow planszy, kiedy gra juz sie zainicjuje wywoluje sie funkcja rejestrujaca, a nastepnie tworzy sie widok planszy dla gracza
 	tableWidth = prompt("Podaj szerokosc planszy: ");
 	var num1 = parseInt(tableWidth);
 	tableHeight = prompt("Podaj wysokosc planszy: ");
@@ -101,13 +97,12 @@ function initGame(){
 	}
 	else{
 		start();
-
 		makeTable();
 	}
 }
 
 
-setInterval(function(){
+setInterval(function(){		// wywolywana okresowo funkcja sprawdzajaca aktualny stan gry (status, czyja tura, odsloniete plytki, tabela wynikow)
 	var coTam= {
 		user: userId,
 		"function": "wattsUp",
@@ -116,7 +111,7 @@ setInterval(function(){
     $.post(address, JSON.stringify(coTam), function(data){console.log(data); });
 	},1000);
 
-function checkTile(x, y, td)
+function checkTile(x, y, td)	// funkcja wywolywana, kiedy gracz kliknie na zakryta plytke (a nie ma jeszcze dwoch odkrytych)
 {
 
 	var coTam= {
@@ -124,7 +119,7 @@ function checkTile(x, y, td)
 		"function": "wattsUp",
 	};
 	
-    $.post(address, JSON.stringify(coTam), function(data){
+    $.post(address, JSON.stringify(coTam), function(data){	// zapytanie serwera, czy to tura danego gracza
 		if(data.player != userId){
 			alert("To nie Twoja tura!");
 		}
@@ -137,27 +132,21 @@ function checkTile(x, y, td)
 			};
 		
 
-			$.post(address, JSON.stringify(tileInfo), function(data){
+			$.post(address, JSON.stringify(tileInfo), function(data){	// wybor plytki i zapytanie serwera, jaki jest tam obrazek
 			
 				console.log(data);
 				obrazek = data.picture;
-				if(obrazek == "nie")
-				{
-					alert("To nie Twoja tura!");
-				}
-				else
-				{
-					picturesOpen.push(obrazek);
-					td.innerHTML = "<img src='"+ obrazek +".png'>";
-					td.otwarty = 1;
-					openTiles.push(td);
+				picturesOpen.push(obrazek);
+				td.innerHTML = "<img src='"+ obrazek +".png'>";
+				td.otwarty = 1;
+				openTiles.push(td);
+							
+				openTilesCount++;
+				if(openTilesCount==2){	// sa otwarte dwa obrazki
+					twoTilesOpen();
 								
-					openTilesCount++;
-					if(openTilesCount==2){	// sa otwarte dwa obrazki
-						twoTilesOpen();
-									
-					}
 				}
+				
 			});
 		}
 	
@@ -167,7 +156,7 @@ function checkTile(x, y, td)
 
 }
 
-function twoTilesOpen()	// mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
+function twoTilesOpen()	// funkcja wywolywana, kiedy mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
 {
 	if(picturesOpen[0]==picturesOpen[1]){
 		openTiles[0].otwarty = 1;
@@ -187,7 +176,7 @@ function twoTilesOpen()	// mamy dwa otwarte obrazki - zakrywamy lub zostawiamy
 	
 }
 
-function closeTiles()
+function closeTiles()	// funkcja zakrywajaca z powrotem dwie odkryte plytki
 {
 	for(i=openTiles.length-1; i>=0; i--){
 	
@@ -200,9 +189,9 @@ function closeTiles()
 	endTurn();
 }
 
-function makeTd(tr)
+function makeTd(tr)		// funkcja tworzaca plytki	
 {
-	var td = document.createElement("td"); //zrob <td>
+	var td = document.createElement("td");
 	td.innerHTML = "<img src='zakryte.png'>";
 	td.setAttribute("id", "k"+(i*100+j));
 	td.otwarty = 0;
@@ -223,7 +212,7 @@ function makeTd(tr)
 	tr.appendChild(td);
 }
 
-function makeTable()
+function makeTable()	// funkcja tworzaca plansze i wypelniajaca ja plytkami
 {
 	var table = document.getElementById("tablica");
 	
@@ -242,13 +231,7 @@ function makeTable()
 
 
 checkState();
-//if(gameInitialized==0){
-//	initGame();
-//	gameInitialized=1;
-//}
-//start();
 
-//makeTable();
 
 </script>
 
