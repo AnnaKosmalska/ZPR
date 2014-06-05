@@ -31,6 +31,10 @@ var address = "../server/new.py";
 var latestOpen1=[-1, -1, -1, -1];
 var latestOpen2=[-1, -1, -1, -1];
 
+function closeOther(pierwszy, drugi){
+	setTimeout(function(pierwszy, drugi){pierwszy.innerHTML = "<img src='zakryte.png'>"; drugi.innerHTML = "<img src='zakryte.png'>";},2500);
+}
+
 
 function checkState(){	/*! pierwsza uruchamiana funkcja, sprawdza, czy uzytkownik jest pierwszy i jesli tak, to uruchamia funkcje inicjalizujaca, a jesli nie, to wywolywana jest od razu funkcja rejestrujaca gracza, a nastepnie tworzy sie widok planszy dla gracza*/
 var dane = {
@@ -145,7 +149,7 @@ setInterval(function(){		/*! wywolywana okresowo funkcja sprawdzajaca aktualny s
 					drugi.otwarty = 1;
 				}
 				else{ // dwa obrazki inne, zakryja sie
-					setTimeout(function(pierwszy, drugi){pierwszy.innerHTML = "<img src='zakryte.png'>"; drugi.innerHTML = "<img src='zakryte.png'>";},2500);
+					closeOther(pierwszy, drugi);
 				}
 			}
 		}
