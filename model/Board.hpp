@@ -92,6 +92,8 @@ private:
    */
   void removePair();
 
+  int addNewPlayer(std::string name);
+
 public: 
   /*! \brief destruktor
 

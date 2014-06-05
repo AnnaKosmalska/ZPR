@@ -7,6 +7,7 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/variate_generator.hpp>
+#include "MyException.hpp"
 
 
 Board::Board()
@@ -44,9 +45,26 @@ void Board::clearPlayers()
 
 int Board::addPlayer(std::string name)
 {
-  if(state == 1) return -2;
+  try
+    {
+      return addNewPlayer(name);
+    }
+  catch(GameInProgressException& e)
+    {
+      return -2;
+    }
+  catch(MaxPlayersException& e)
+    {
+      return -3;
+    }  
+}
+
+int Board::addNewPlayer(std::string name)
+{
+  if(state == 1)
+    throw GameInProgressException();
   if(playersNumber() >= MAX_PLAYERS)
-    return -3;
+    throw MaxPlayersException();
   players.push_back(Player(name, playersNumber()));
   return playersNumber()-1;
 }
@@ -91,6 +109,12 @@ int Board::choose(int player, int x, int y)
       return ret;
     }
   return -1;
+}
+
+int Board::chooseTile(int player, int x, int y)
+{
+  if(player >= playersNumber())
+    throw UknownPlayerException();
 }
 
 void Board::removePair()
