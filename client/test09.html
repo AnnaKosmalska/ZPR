@@ -114,50 +114,52 @@ setInterval(function(){		/*! wywolywana okresowo funkcja sprawdzajaca aktualny s
 		user: userId,
 		"function": "wattsUp",
 	};
+	if(userId != 0){
 	
-    $.post(address, JSON.stringify(coTam), function(data){
-		console.log(data);
-		if(data.player != userId){	// to nie nasz tura, trzeba pokazac obrazki
-		
-		if(data.first[0]>=0 && data.first[1]>=0 && data.first[2]>=0 && data.second[0]>=0 && data.second[1]>=0 && data.second[2]>=0){	//jesli sa dwa obrazki do pokazania
+		$.post(address, JSON.stringify(coTam), function(data){
+			console.log(data);
+			if(data.player != userId){	// to nie nasz tura, trzeba pokazac obrazki
 			
-			var wspX1 = data.first[0];
-			var wspY1 = data.first[1];
-			var pict1 = data.first[2];
-			
-			var wspX2 = data.second[0];
-			var wspY2 = data.second[1];
-			var pict2 = data.second[2];
-			
-			var toOpen1 = [wspX1, wspY1, pict1, data.player];
-			var toOpen2 = [wspX2, wspY2, pict2, data.player];
-			
-			if(toOpen1 != latestOpen1 && toOpen2 != latestOpen2){	// nie probujemy otworzyc dokladnie tego, co ostatnio
-			
-				latestOpen1 = toOpen1;
-				latestOpen2 = toOpen2;
-				var tile2 = wspY2*tableWidth + wspX2;
-				var tile1 = wspY1*tableWidth + wspX1;
-				var pierwszy = document.getElementById("k"+(tile1));
-				var drugi = document.getElementById("k"+(tile2));
+			if(data.first[0]>=0 && data.first[1]>=0 && data.first[2]>=0 && data.second[0]>=0 && data.second[1]>=0 && data.second[2]>=0){	//jesli sa dwa obrazki do pokazania
 				
-				pierwszy.innerHTML = "<img src='"+ pict1 +".jpg'>";
-				drugi.innerHTML = "<img src='"+ pict2 +".jpg'>";
+				var wspX1 = data.first[0];
+				var wspY1 = data.first[1];
+				var pict1 = data.first[2];
 				
-				if(pict1 == pict2){	// dwa obrazki takie same, zostaja na zawsze
-					pierwszy.otwarty = 1;
-					drugi.otwarty = 1;
-				}
-				else{ // dwa obrazki inne, zakryja sie
-					closeOther(pierwszy, drugi);
+				var wspX2 = data.second[0];
+				var wspY2 = data.second[1];
+				var pict2 = data.second[2];
+				
+				var toOpen1 = [wspX1, wspY1, pict1, data.player];
+				var toOpen2 = [wspX2, wspY2, pict2, data.player];
+				
+				if(toOpen1 != latestOpen1 && toOpen2 != latestOpen2){	// nie probujemy otworzyc dokladnie tego, co ostatnio
+				
+					latestOpen1 = toOpen1;
+					latestOpen2 = toOpen2;
+					var tile2 = wspY2*tableWidth + wspX2;
+					var tile1 = wspY1*tableWidth + wspX1;
+					var pierwszy = document.getElementById("k"+(tile1));
+					var drugi = document.getElementById("k"+(tile2));
+					
+					pierwszy.innerHTML = "<img src='"+ pict1 +".jpg'>";
+					drugi.innerHTML = "<img src='"+ pict2 +".jpg'>";
+					
+					if(pict1 == pict2){	// dwa obrazki takie same, zostaja na zawsze
+						pierwszy.otwarty = 1;
+						drugi.otwarty = 1;
+					}
+					else{ // dwa obrazki inne, zakryja sie
+						closeOther(pierwszy, drugi);
+					}
 				}
 			}
-		}
-	
-			
-			
-		}
-	});
+		
+				
+				
+			}
+		});
+	}
 },1000);
 
 function checkTile(x, y, td)	/*! funkcja wywolywana, kiedy gracz kliknie na zakryta plytke (a nie ma jeszcze dwoch odkrytych) */
