@@ -21,4 +21,28 @@ class UknownPlayerException: public BaseException
 {
 };
 
+class NoPlayerException: public BaseException
+{
+};
+
+class NotCurrentPlayerException: public BaseException
+{
+};
+
+class TileOutOfBoardException: public BaseException
+{
+};
+
+class TwoTilesChosenException: public BaseException
+{
+};
+
+class GameNotStartedException: public BaseException
+{
+};
+
+class WrongParametersException: public BaseException
+{
+};
+
 #endif

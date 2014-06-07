@@ -7,7 +7,7 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/variate_generator.hpp>
-#include "MyException.hpp"
+
 
 
 Board::Board()
@@ -45,28 +45,14 @@ void Board::clearPlayers()
 
 int Board::addPlayer(std::string name)
 {
-  try
-    {
-      return addNewPlayer(name);
-    }
-  catch(GameInProgressException& e)
-    {
-      return -2;
-    }
-  catch(MaxPlayersException& e)
-    {
-      return -3;
-    }  
-}
-
-int Board::addNewPlayer(std::string name)
-{
-  if(state == 1)
+  if(state > 0)
     throw GameInProgressException();
+  if(state == -1)
+    throw GameNotStartedException();
   if(playersNumber() >= MAX_PLAYERS)
     throw MaxPlayersException();
   players.push_back(Player(name, playersNumber()));
-  return playersNumber()-1;
+  return playersNumber()-1; 
 }
 
 int Board::getTile(int x, int y) const
@@ -77,14 +63,16 @@ int Board::getTile(int x, int y) const
 int Board::choose(int player, int x, int y)
 {
   if(player >= playersNumber())
-    return -400;
-  state = 1;
+    throw UknownPlayerException();
   if(playersNumber()==0)
-    return -300;
+    throw NoPlayerException();
   if(player != currentPlayer)
-    return -200;
+    throw NotCurrentPlayerException();
   if(x>=sizeX || y>=sizeY)
-   return -100;
+    throw TileOutOfBoardException();
+  if(firstPicked != -1 && secondPicked != -1)
+    throw TwoTilesChosenException();
+  state = 1;
   if(firstPicked == -1)
     {
       firstPicked = getTile(x, y);
@@ -92,7 +80,7 @@ int Board::choose(int player, int x, int y)
       firstY=y;
       return firstPicked;
     }
-  if(secondPicked == -1)
+  else
     {
       secondPicked = getTile(x,y);
       secondX=x;
@@ -108,13 +96,6 @@ int Board::choose(int player, int x, int y)
 	}     
       return ret;
     }
-  return -1;
-}
-
-int Board::chooseTile(int player, int x, int y)
-{
-  if(player >= playersNumber())
-    throw UknownPlayerException();
 }
 
 void Board::removePair()
@@ -145,12 +126,14 @@ int Board::endTurn()
 
 int Board::initGame(int x, int y)
 {
+  if(x <= 0 || y <= 0 || (x*y)%2)
+    throw WrongParametersException();
   if(state != -1)
-    return -1;
+    throw GameInProgressException();
   {
     boost::mutex::scoped_lock scoped_lock(initMutex);
     if(state != -1)
-      return -1;
+      throw GameInProgressException();
     sizeX = x;
     sizeY = y;
     all = sizeY*sizeX;
@@ -216,10 +199,27 @@ void Board::initBoard()
 int Board::getWinner(int player)
 {
   if(player >= playersNumber())
-    return -1;
+    throw UknownPlayerException();
   if(players[player].getScore() == winner)
     return 1;
-  return 0;
+  else throw NoPlayerException();
+}
+
+int Board::getScore(int player)
+{
+  if(player >= playersNumber())
+    throw UknownPlayerException();
+  if(playersNumber()==0)
+    throw NoPlayerException();
+  return players[player].getScore();
+}
+std::string Board::getName(int player)
+{
+  if(player >= playersNumber())
+    throw UknownPlayerException();
+  if(playersNumber()==0)
+    throw NoPlayerException();
+  return players[player].getName();
 }
 
 

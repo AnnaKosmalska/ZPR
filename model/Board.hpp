@@ -11,9 +11,9 @@
 #include "Player.hpp"
 #include "Tile.hpp"
 #include <map>
-#include <boost/python.hpp>
 #include <string>
 #include <boost/thread/mutex.hpp>
+#include "MyException.hpp"
 
 /*! \class Board
   \brief reprezentuje plansze gry
@@ -22,7 +22,7 @@
 */
 class Board
 {
-  
+  friend class Test;
 private:
     
   std::vector<Player> players;
@@ -81,6 +81,10 @@ private:
     rozlozenie kart na planszy
   */
   void initBoard();
+  
+  /*! \brief usuniecie pary z planszy firstPicked i secondPicked
+   */
+  void removePair();
   /*! \brief sprawdzenie karty
 
     \return id karty
@@ -88,13 +92,9 @@ private:
     \param y wspolrzedna Y karty
   */
   int getTile(int x, int y) const;
-  /*! \brief usuniecie pary z planszy firstPicked i secondPicked
-   */
-  void removePair();
 
-  int addNewPlayer(std::string name);
-
-public: 
+public:
+  
   /*! \brief destruktor
 
     usuwa graczy oraz karty z planszy
@@ -215,10 +215,7 @@ public:
     \return wynik gracza
     \param score id gracza
    */
-  int getScore(int player)
-  {
-    return players[player].getScore();
-  }
+  int getScore(int player);
   /*! \brief pobranie wymiaru plaszy X
 
     \return X planszy
@@ -239,10 +236,7 @@ public:
 
     \return nazwa gracza
   */
-  std::string getName(int player)
-  {
-    return players[player].getName();
-  }
+  std::string getName(int player);
   /*! \brief czy gracz jest zwyciezca
 
     \return zwyciestwo
@@ -250,137 +244,5 @@ public:
   int getWinner(int player);
   
 };
-
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int addPlayer(std::string name)
-{
-  return Board::getInstance().addPlayer(name)+1;
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int choose(int player, int x, int y)
-{
-  return Board::getInstance().choose(player-1, x, y);
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int initGame(int x, int y)
-{
-  return Board::getInstance().initGame(x, y);
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-void endGame()
-{
-  Board::getInstance().endGame();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getCurrentPlayer()
-{
-  return Board::getInstance().getCurrentPlayer()+1;
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getState()
-{
-  return Board::getInstance().getState();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getFirstPicked()
-{
-  return Board::getInstance().getFirstPicked();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getFirstX()
-{
-  return Board::getInstance().getFirstX();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getFirstY()
-{
-  return Board::getInstance().getFirstY();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getSecondPicked()
-{
-  return Board::getInstance().getSecondPicked();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getSecondX()
-{
-  return Board::getInstance().getSecondX();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getSecondY()
-{
-  return Board::getInstance().getSecondY();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getScore(int player)
-{
-  return Board::getInstance().getScore(player-1);
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int endTurn()
-{
-  return Board::getInstance().endTurn()+1;
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getSizeX()
-{
-  return Board::getInstance().getSizeX();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getSizeY()
-{
-  return Board::getInstance().getSizeY();
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-std::string getName(int player)
-{
-  return Board::getInstance().getName(player-1);
-}
-/*! \brief funkcja sluzaca do komunikacji z interfejsem modulu pythona
- */
-int getWinner(int player)
-{
-  return Board::getInstance().getWinner(player-1);
-}
-/*! \brief modul pythona sluzacy do komunikacji z serwerem
- */
-BOOST_PYTHON_MODULE(model)
-{
-  boost::python::def("addPlayer", addPlayer);
-  boost::python::def("choose", choose);
-  boost::python::def("initGame", initGame);
-  boost::python::def("endGame", endGame);
-  boost::python::def("getCurrentPlayer", getCurrentPlayer);
-  boost::python::def("getState", getState);
-  boost::python::def("getFirstPicked", getFirstPicked);
-  boost::python::def("getFirstX", getFirstX);
-  boost::python::def("getFirstY", getFirstY);
-  boost::python::def("getSecondPicked", getSecondPicked);
-  boost::python::def("getSecondX", getSecondX);
-  boost::python::def("getSecondY", getSecondY);
-  boost::python::def("endTurn", endTurn);
-  boost::python::def("getScore", getScore);
-  boost::python::def("getSizeX", getSizeX);
-  boost::python::def("getSizeY", getSizeY);
-  boost::python::def("getName", getName);
-  boost::python::def("getWinner", getWinner);
-}
 
 #endif
