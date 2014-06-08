@@ -179,8 +179,11 @@ except:
 
 print "Sprawdzam reakcje na brak gracza."
 try:
-	model.playerDead(2)
-	print "	OK"
+	if model.playerDead(2) == 1
+		print "	OK"
+	else:
+		print "	ERROR"
+		errors = errors + 1
 except:
 		print "	CRITICAL ERROR"
 		errors = errors + 1
@@ -190,6 +193,17 @@ except:
 print "Koncze rozgrywke."
 try:
 	model.endGame()
+except:
+		print "	CRITICAL ERROR"
+		errors = errors + 1
+
+print "Testuje poprawnosc kolejnosci."
+try:
+	if model.getCurrentPlayer() == 1:
+		print "	OK"
+	else:
+		print "	ERROR"
+		errors = errors + 1
 except:
 		print "	CRITICAL ERROR"
 		errors = errors + 1
