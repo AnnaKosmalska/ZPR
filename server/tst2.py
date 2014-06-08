@@ -69,7 +69,7 @@ except:
 
 print "Testuje zmiane gracza."
 try:
-	if model.endTurn(2,1,1) == 2:
+	if model.endTurn() == 2:
 		print "	OK"
 	else:
 		print "	ERROR"
@@ -80,7 +80,7 @@ except:
 
 print "Testuje poprawnosc kolejnosci."
 try:
-	if model.getScore() == 2:
+	if model.getCurrentPlayer() == 2:
 		print "	OK"
 	else:
 		print "	ERROR"
@@ -91,8 +91,8 @@ except:
 
 print "Testuje wybor."
 try:
-	k = model.choose(1,2) 
-	if k >= 1:
+	k = model.choose(2,1,2) 
+	if k >= 0:
 		print "	OK"
 	else:
 		print "	ERROR"
@@ -134,7 +134,7 @@ except:
 
 try:
 	print "Testuje wynik."
-	if model.getScore() >= 0:
+	if model.getScore(2) >= 0:
 		print "	OK"
 	else:
 		print "	ERROR"
@@ -155,7 +155,7 @@ except:
 		print "	CRITICAL ERROR"
 		errors = errors + 1
 try:
-	if model.getSizeX() == 5:
+	if model.getSizeY() == 5:
 		print "	Y	OK"
 	else:
 		print "	Y	ERROR"

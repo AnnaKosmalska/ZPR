@@ -83,6 +83,9 @@ def App(environ, start_response):
 		x = model.endTurn()
 		x = dict(status=x)
 
+	if function == "playerDead":
+		x = model.playerDead(auser_id)
+
 	if function == "checkState":
 		x = model.getState()
 		x = dict(user_id=auser_id,State=x)
