@@ -22,7 +22,9 @@ private:
   int score;
   /*!<wynik gracza*/
   Deck deck;
-  /*!<karty zdobyte przez gracza*/ 
+  /*!<karty zdobyte przez gracza*/
+  bool dead;
+  /*!<czy gracz nie przestal grac*/
 
 public:
   /*! \brief konstruktor
@@ -62,10 +64,18 @@ public:
     \return nazwa gracza
   */
   std::string getName()
-
   {
     return name;
   }
+  /*! \brief czy gracz jest martwy
+   */
+  bool isDead()
+  {
+    return dead;
+  }
+  /*! \brief koniec gracza
+   */
+  int playerDead();
 };
 
 #endif

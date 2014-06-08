@@ -119,9 +119,29 @@ int Board::endTurn()
   secondPicked = -1;
   secondX = -1;
   secondY = -1;
-  if(currentPlayer == playersNumber()-1) currentPlayer = 0;
-    else ++currentPlayer;
+  int oldCurrent = currentPlayer;
+  currentPlayer = nextPlayer();
+  while(players[currentPlayer].isDead())
+    {
+      
+      if(currentPlayer == oldCurrent)
+	{
+	  endGame();
+	  break;
+	}
+      currentPlayer = nextPlayer();
+    }
+  
+  
   return currentPlayer;
+}
+
+int Board::nextPlayer()
+{
+  int next;
+  if(currentPlayer == playersNumber()-1) next = 0;
+    else next = currentPlayer + 1;
+  return next;
 }
 
 int Board::initGame(int x, int y)
@@ -222,6 +242,16 @@ std::string Board::getName(int player)
   return players[player].getName();
 }
 
-
+int Board::playerDead(int player)
+{
+  if(player >= playersNumber())
+    throw UknownPlayerException();
+  if(playersNumber()==0)
+    throw NoPlayerException();
+  players[player].playerDead();
+  if(player == currentPlayer)
+    endTurn();
+  return currentPlayer;
+}
 
 

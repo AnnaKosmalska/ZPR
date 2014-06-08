@@ -201,6 +201,22 @@ int getWinner(int player)
 }
 /*! \brief modul pythona sluzacy do komunikacji z serwerem
  */
+int playerDead(int player)
+{
+  try
+    {
+      Board::getInstance().playerDead(player-1);
+      return 1;
+    }
+  catch(NoPlayerException& e)
+    {
+      return -1;
+    }
+  catch(UknownPlayerException& e)
+    {
+      return -2;
+    }
+}
 
 BOOST_PYTHON_MODULE(model)
 {
@@ -222,6 +238,7 @@ BOOST_PYTHON_MODULE(model)
   boost::python::def("getSizeY", getSizeY);
   boost::python::def("getName", getName);
   boost::python::def("getWinner", getWinner);
+  boost::python::def("playerDead", playerDead);
   }
 
 #endif

@@ -92,6 +92,9 @@ private:
     \param y wspolrzedna Y karty
   */
   int getTile(int x, int y) const;
+  /*! \brief nastepny gracz
+   */
+  int nextPlayer();
 
 public:
   
@@ -242,6 +245,9 @@ public:
     \return zwyciestwo
   */
   int getWinner(int player);
+  /*! \brief funkcja wylaczajaca gracza z rozgrywki
+   */
+  int playerDead(int player);
   
 };
 

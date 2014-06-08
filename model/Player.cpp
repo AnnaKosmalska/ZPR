@@ -6,6 +6,7 @@ Player::Player(std::string _name, int _ID)
   name = _name;
   ID = _ID;
   score = 0;
+  dead = false;
 }
 
 Player::~Player()
@@ -36,5 +37,10 @@ Deck Player::getDeck() const
 int Player::getScore() const
 {
   return score;
+}
+
+int Player::playerDead()
+{
+  dead = true;
 }
 
