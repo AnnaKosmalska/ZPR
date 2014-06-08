@@ -177,6 +177,15 @@ except:
 		errors = errors + 1
 
 
+print "Sprawdzam reakcje na brak gracza."
+try:
+	model.playerDead(2)
+	print "	OK"
+except:
+		print "	CRITICAL ERROR"
+		errors = errors + 1
+
+
 
 print "Koncze rozgrywke."
 try:
