@@ -196,7 +196,7 @@ int getWinner(int player)
     }
   catch(NoPlayerException& e)
     {
-      return 0;
+      return 2;
     }
 }
 /*! \brief modul pythona sluzacy do komunikacji z serwerem
