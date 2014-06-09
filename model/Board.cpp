@@ -220,10 +220,11 @@ int Board::getWinner(int player)
 {
   if(player >= playersNumber())
     throw UknownPlayerException();
+  if(playersNumber() == 0)
+    throw NoPlayerException();
   if(players[player].getScore() == winner)
     return 1;
-  else throw NoPlayerException();
-}
+  return 0;
 
 int Board::getScore(int player)
 {
