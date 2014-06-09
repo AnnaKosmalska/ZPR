@@ -1,0 +1,398 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+<title>Memo</title>
+<style>
+IMG { height: 80px; width: 80px }
+</style>
+</head>
+<body>
+<table id="tablica">
+</table>
+<div >
+<button id = "button" style="display: none;">Restart</button>
+</div>
+</body>
+<script type="text/javascript" src="jquery-1.11.0.js"></script>
+<script>
+// zmienne ustawiane przez uzytkownika
+var tableWidth=4;
+var tableHeight=4;
+
+//zmienne, ktore dostaje od serwera
+var userId = 0;
+var gameInitialized=-1;
+var gameStarted = 0;
+
+// wlasne zmienne globalne
+var tileNumber=0;
+var openTilesCount=0;
+var openTiles=[];
+var picturesOpen=[];
+var address = "../server/new.py";
+var notYet = 0;
+
+var countdownSet = 0;
+//var normalTurn = 0;
+
+var countdown = null;
+
+var latestOpen1=[-1, -1, -1, -1];
+var latestOpen2=[-1, -1, -1, -1];
+
+
+window.onbeforeunload = function() {	/*! przy zamykaniu okna uzytkownik wysyla informacje, ze odlacza sie od gry */
+    var dane = {
+		user: userId,
+		"function": "playerDead",
+	};
+	
+	$.post(address, JSON.stringify(dane), function(data){});
+}
+
+
+function closeOther(pierwszy, drugi){	/*! zamykanie plytek otwartych przez innego gracza */
+	notYet = 1;
+	setTimeout(function(){
+		pierwszy.innerHTML = "<img src='zakryte.png'>";
+		drugi.innerHTML = "<img src='zakryte.png'>";
+		notYet=0;
+		pierwszy.otwarty = 0;
+		drugi.otwarty = 0;
+		openTiles.pop();
+		openTilesCount--;
+		openTiles.pop();
+		openTilesCount--;
+		},2500);
+}
+
+
+function checkState(){	/*! pierwsza uruchamiana funkcja, sprawdza, czy uzytkownik jest pierwszy i jesli tak, to uruchamia funkcje inicjalizujaca, a jesli nie, to wywolywana jest od razu funkcja rejestrujaca gracza, a nastepnie tworzy sie widok planszy dla gracza*/
+var dane = {
+		user: userId,
+		"function": "checkState",
+	};
+	
+	$.post(address, JSON.stringify(dane), function(data){
+		gameInitialized = data.State;
+		if(gameInitialized==-1){
+			initGame();
+		}
+		else{
+			start();
+			makeTable();
+		}
+	});
+
+}
+
+
+function endTurn(){		/*! funkcja wysyla do serwera informacje, ze gracz skonczyl swoja ture */
+	var end= {
+			user: userId,
+			"function": "endTurn",
+		};
+	document.body.style.backgroundColor="yellow";
+	$.post(address, JSON.stringify(end), function(data){console.log(data);});
+	//normalTurn=0;
+	countdownSet = 0;
+}
+
+
+function start(){		/*! funkcja rejestrujaca gracza*/
+		if(gameInitialized !== 1){
+			var imie = prompt("Podaj imie");
+			var dane = {
+				user: userId,
+				"function": "addPlayer",
+				name: imie,
+			};
+			
+			$.post(address, JSON.stringify(dane), function(data){userId = data.user;});
+		}
+}
+
+
+
+function initGame(){	/*! funkcja inicjalizujaca gre, uzytkownik jest proszony o podanie wymiarow planszy, kiedy gra juz sie zainicjuje wywoluje sie funkcja rejestrujaca, a nastepnie tworzy sie widok planszy dla gracza*/
+	tableWidth = prompt("Podaj szerokosc planszy: ");
+	var num1 = parseInt(tableWidth);
+	tableHeight = prompt("Podaj wysokosc planszy: ");
+	var num2 = parseInt(tableHeight);
+	
+	while((num1*num2)%2 != 0){	// jezeli uzytkownik podal bzdure 
+		tableWidth = prompt("Liczba kafelkow musi byc parzysta! Podaj szerokosc planszy: ");
+		var num1 = parseInt(tableWidth);
+		tableHeight = prompt("Podaj wysokosc planszy: ");
+		var num2 = parseInt(tableHeight);
+	}
+	
+	
+		if(gameInitialized==-1){
+	
+	
+			var dane= {
+				'user': userId,
+				'function': "initGame",
+				columns: num1,
+				rows: num2,
+			};
+	
+			$.post(address, JSON.stringify(dane), function(data){
+				console.log(data);
+				start();
+				makeTable();
+		
+			});
+		}
+		else{
+			start();
+			makeTable();
+		}
+}
+
+
+setInterval(function(){		/*! wywolywana okresowo funkcja sprawdzajaca aktualny stan gry (status, czyja tura, odsloniete plytki, tabela wynikow) */
+	var coTam= {
+		user: userId,
+		"function": "wattsUp",
+	};
+	
+	if(userId != 0){
+	
+		$.post(address, JSON.stringify(coTam), function(data){
+			console.log(data);
+			if(data.status == 2){ //koniec gry
+				
+
+				alert("Koniec gry! Twoj wynik: " + data.score);
+				
+				//var dane = {
+				//user: userId,
+				//"function": "getWinner",
+				//};
+				
+				//$.post(address, JSON.stringify(dane), function(data){console.log(data);});
+				
+				var dane = {
+				user: userId,
+				"function": "endGame",
+				};
+				
+				
+				$.post(address, JSON.stringify(dane), function(data){
+					//var button = document.createElement("button");
+					//$("#button").innerHTML = "Restart";
+					var button = document.getElementById("button");
+					$("#button").show();
+					button.onclick = function(){location.reload();};
+					
+				});
+				
+			}
+			else{
+			
+				if(data.player != userId){	// to nie nasz tura, trzeba pokazac obrazki
+			
+					if(data.first[0]>=0 && data.first[1]>=0 && data.first[2]>=0 && data.second[0]>=0 && data.second[1]>=0 && data.second[2]>=0){	//jesli sa dwa obrazki do pokazania
+				
+						var wspX1 = data.first[0];
+						var wspY1 = data.first[1];
+						var pict1 = data.first[2];
+				
+						var wspX2 = data.second[0];
+						var wspY2 = data.second[1];
+						var pict2 = data.second[2];
+				
+						var toOpen1 = [wspX1, wspY1, pict1, data.player];
+						var toOpen2 = [wspX2, wspY2, pict2, data.player];
+				
+						if(toOpen1 != latestOpen1 && toOpen2 != latestOpen2){	// nie probujemy otworzyc dokladnie tego, co ostatnio
+				
+							latestOpen1 = toOpen1;
+							latestOpen2 = toOpen2;
+							var tile2 = wspY2*tableWidth + wspX2;
+							var tile1 = wspY1*tableWidth + wspX1;
+							var pierwszy = document.getElementById("k"+(tile1));
+							var drugi = document.getElementById("k"+(tile2));
+					
+							pierwszy.innerHTML = "<img src='"+ pict1 +".jpg'>";
+							drugi.innerHTML = "<img src='"+ pict2 +".jpg'>";
+							
+							pierwszy.otwarty = 1;
+							drugi.otwarty = 1;
+							
+							openTiles.push(pierwszy);
+							openTilesCount++;
+							
+							openTiles.push(drugi);
+							openTilesCount++;
+					
+							if(pict1 == pict2){	// dwa obrazki takie same, zostaja na zawsze
+								pierwszy.otwarty = 1;
+								drugi.otwarty = 1;
+								openTiles.pop();
+								openTilesCount--;
+								openTiles.pop();
+								openTilesCount--;
+							}
+							else{ // dwa obrazki inne, zakryja sie
+								closeOther(pierwszy, drugi);
+							}
+						}
+					}	
+				}
+				else{	//nasza tura
+					document.body.style.backgroundColor="green";
+					if(countdownSet==0){
+					countdownSet = 1;
+					countdown = setTimeout(endTurn,20000);
+				}
+					
+					
+				}
+			}
+		});
+	}
+},200);
+
+function checkTile(x, y, td)	/*! funkcja wywolywana, kiedy gracz kliknie na zakryta plytke (a nie ma jeszcze dwoch odkrytych) */
+{
+
+	var coTam= {
+		user: userId,
+		"function": "wattsUp",
+	};
+	
+    $.post(address, JSON.stringify(coTam), function(data){	/*! zapytanie serwera, czy to tura danego gracza */
+		if(data.player != userId || notYet == 1){
+			var miejsce = document.getElementById("tura");
+			miejsce.innerHTML = "To nie Twoja tura!";
+			
+		}
+		else{		/* nasza tura, mozna sprawdzac */
+			var tileInfo= {
+			user: userId,
+			row: x,
+			column: y,
+			"function": "choose",
+			};
+		
+
+			$.post(address, JSON.stringify(tileInfo), function(data){	/*! wybor plytki i zapytanie serwera, jaki jest tam obrazek */
+			
+				console.log(data);
+				obrazek = data.picture;
+				if(obrazek>=0){
+					picturesOpen.push(obrazek);
+					td.innerHTML = "<img src='"+ obrazek +".jpg'>";
+					td.otwarty = 1;
+					openTiles.push(td);
+								
+					openTilesCount++;
+					if(openTilesCount==2){	/* sa otwarte dwa obrazki */
+						//normalTurn = 1;
+						clearTimeout(countdown);
+						twoTilesOpen();
+									
+					}
+				}
+				
+			});
+		}
+	
+	
+	});
+	
+
+}
+
+function twoTilesOpen()	/*! funkcja wywolywana, kiedy mamy dwa otwarte obrazki - zakrywamy lub zostawiamy */
+{
+	if(picturesOpen[0]==picturesOpen[1]){
+		openTiles[0].otwarty = 1;
+		openTiles[1].otwarty = 1;
+		openTilesCount--; //przeniesc pozniej
+		openTiles.pop();
+		openTilesCount--;
+		openTiles.pop();
+		picturesOpen.pop();
+		picturesOpen.pop();
+		setTimeout(endTurn,2500);
+	}
+	else{
+		setTimeout(closeTiles,2500);
+	}
+	
+	
+}
+
+function closeTiles()	/*! funkcja zakrywajaca z powrotem dwie odkryte plytki */
+{
+	for(i=openTiles.length-1; i>=0; i--){
+	
+		openTiles[i].innerHTML = "<img src='zakryte.png'>";
+		openTiles[i].otwarty = 0;
+		openTilesCount--;
+		openTiles.pop();
+		picturesOpen.pop();
+	}
+	endTurn();
+}
+
+function makeTd(tr)		/*! funkcja tworzaca plytki	 */
+{
+	var td = document.createElement("td");
+	td.innerHTML = "<img src='zakryte.png'>";
+	td.setAttribute("id", "k"+(tileNumber));
+	td.otwarty = 0;
+	td.number = tileNumber;
+	tileNumber = tileNumber + 1;
+	td.onclick = function(){
+		if(openTilesCount<2){		// mozna odkrywac
+			if(td.otwarty == 0){	// obrazek zakryty
+				var kolumna = td.number % tableWidth;
+				var rzad = (td.number - kolumna)/tableWidth;
+				checkTile(rzad, kolumna, td);
+				
+			
+			}
+		
+		}
+	}
+	tr.appendChild(td);
+}
+
+function makeTable()	/*! funkcja tworzaca plansze i wypelniajaca ja plytkami */
+{
+	var table = document.getElementById("tablica");
+	var dane = {
+		user: userId,
+		"function": "getSize",
+	};
+	
+	$.post(address, JSON.stringify(dane), function(data){
+		tableWidth = data.sizeX;
+		tableHeight = data.sizeY;
+	
+		for(i=1; i<=tableHeight; i++)
+		{
+			var tr = document.createElement("tr"); //zrob <tr>
+			for(j=1; j<=tableWidth; j++)
+			{
+				makeTd(tr);
+			}
+			table.appendChild(tr);
+		}
+	});
+}
+status
+// koniec deklaracji, poczatek wywolan
+
+document.body.style.backgroundColor="yellow";
+checkState();
+
+
+</script>
+
+</html>
