@@ -40,8 +40,8 @@ var countdown = null;
 var latestOpen1=[-1, -1, -1, -1];
 var latestOpen2=[-1, -1, -1, -1];
 
-
-window.onbeforeunload = function() {	/*! przy zamykaniu okna uzytkownik wysyla informacje, ze odlacza sie od gry */
+/*! przy zamykaniu okna uzytkownik wysyla informacje, ze odlacza sie od gry */
+window.onbeforeunload = function() {	
     var dane = {
 		user: userId,
 		"function": "playerDead",
@@ -50,8 +50,8 @@ window.onbeforeunload = function() {	/*! przy zamykaniu okna uzytkownik wysyla i
 	$.post(address, JSON.stringify(dane), function(data){});
 }
 
-
-function closeOther(pierwszy, drugi){	/*! zamykanie plytek otwartych przez innego gracza */
+/*! zamykanie plytek otwartych przez innego gracza */
+function closeOther(pierwszy, drugi){	
 	notYet = 1;
 	setTimeout(function(){
 		pierwszy.innerHTML = "<img src='zakryte.png'>";
@@ -66,9 +66,8 @@ function closeOther(pierwszy, drugi){	/*! zamykanie plytek otwartych przez inneg
 		},2500);
 }
 
-
-function checkState(){	/*! pierwsza uruchamiana funkcja, sprawdza, czy uzytkownik jest pierwszy i jesli tak, to uruchamia funkcje inicjalizujaca, a jesli nie, to wywolywana jest od razu funkcja rejestrujaca gracza, a nastepnie tworzy sie widok planszy dla gracza*/
-var dane = {
+/*! pierwsza uruchamiana funkcja, sprawdza, czy uzytkownik jest pierwszy i jesli tak, to uruchamia funkcje inicjalizujaca, a jesli nie, to wywolywana jest od razu funkcja rejestrujaca gracza, a nastepnie tworzy sie widok planszy dla gracza*/
+function checkState(){	var dane = {
 		user: userId,
 		"function": "checkState",
 	};
@@ -86,8 +85,8 @@ var dane = {
 
 }
 
-
-function endTurn(){		/*! funkcja wysyla do serwera informacje, ze gracz skonczyl swoja ture */
+/*! funkcja wysyla do serwera informacje, ze gracz skonczyl swoja ture */
+function endTurn(){		
 	var end= {
 			user: userId,
 			"function": "endTurn",
@@ -98,8 +97,8 @@ function endTurn(){		/*! funkcja wysyla do serwera informacje, ze gracz skonczyl
 	countdownSet = 0;
 }
 
-
-function start(){		/*! funkcja rejestrujaca gracza*/
+/*! funkcja rejestrujaca gracza*/
+function start(){		
 		if(gameInitialized !== 1){
 			var imie = prompt("Podaj imie");
 			var dane = {
@@ -113,9 +112,8 @@ function start(){		/*! funkcja rejestrujaca gracza*/
 }
 
 
-
-function initGame(){	/*! funkcja inicjalizujaca gre, uzytkownik jest proszony o podanie wymiarow planszy, kiedy gra juz sie zainicjuje wywoluje sie funkcja rejestrujaca, a nastepnie tworzy sie widok planszy dla gracza*/
-	tableWidth = prompt("Podaj szerokosc planszy: ");
+/*! funkcja inicjalizujaca gre, uzytkownik jest proszony o podanie wymiarow planszy, kiedy gra juz sie zainicjuje wywoluje sie funkcja rejestrujaca, a nastepnie tworzy sie widok planszy dla gracza*/
+function initGame(){		tableWidth = prompt("Podaj szerokosc planszy: ");
 	var num1 = parseInt(tableWidth);
 	tableHeight = prompt("Podaj wysokosc planszy: ");
 	var num2 = parseInt(tableHeight);
@@ -151,9 +149,8 @@ function initGame(){	/*! funkcja inicjalizujaca gre, uzytkownik jest proszony o 
 		}
 }
 
-
-setInterval(function(){		/*! wywolywana okresowo funkcja sprawdzajaca aktualny stan gry (status, czyja tura, odsloniete plytki, tabela wynikow) */
-	var coTam= {
+/*! wywolywana okresowo funkcja sprawdzajaca aktualny stan gry (status, czyja tura, odsloniete plytki, tabela wynikow) */
+setInterval(function(){			var coTam= {
 		user: userId,
 		"function": "wattsUp",
 	};
@@ -256,8 +253,9 @@ setInterval(function(){		/*! wywolywana okresowo funkcja sprawdzajaca aktualny s
 	}
 },200);
 
-function checkTile(x, y, td)	/*! funkcja wywolywana, kiedy gracz kliknie na zakryta plytke (a nie ma jeszcze dwoch odkrytych) */
-{
+
+/*! funkcja wywolywana, kiedy gracz kliknie na zakryta plytke (a nie ma jeszcze dwoch odkrytych) */
+function checkTile(x, y, td)	{
 
 	var coTam= {
 		user: userId,
@@ -307,7 +305,8 @@ function checkTile(x, y, td)	/*! funkcja wywolywana, kiedy gracz kliknie na zakr
 
 }
 
-function twoTilesOpen()	/*! funkcja wywolywana, kiedy mamy dwa otwarte obrazki - zakrywamy lub zostawiamy */
+/*! funkcja wywolywana, kiedy mamy dwa otwarte obrazki - zakrywamy lub zostawiamy */
+function twoTilesOpen()	
 {
 	if(picturesOpen[0]==picturesOpen[1]){
 		openTiles[0].otwarty = 1;
@@ -327,7 +326,8 @@ function twoTilesOpen()	/*! funkcja wywolywana, kiedy mamy dwa otwarte obrazki -
 	
 }
 
-function closeTiles()	/*! funkcja zakrywajaca z powrotem dwie odkryte plytki */
+/*! funkcja zakrywajaca z powrotem dwie odkryte plytki */
+function closeTiles()	
 {
 	for(i=openTiles.length-1; i>=0; i--){
 	
@@ -340,7 +340,8 @@ function closeTiles()	/*! funkcja zakrywajaca z powrotem dwie odkryte plytki */
 	endTurn();
 }
 
-function makeTd(tr)		/*! funkcja tworzaca plytki	 */
+/*! funkcja tworzaca plytki	 */
+function makeTd(tr)		
 {
 	var td = document.createElement("td");
 	td.innerHTML = "<img src='zakryte.png'>";
@@ -363,7 +364,8 @@ function makeTd(tr)		/*! funkcja tworzaca plytki	 */
 	tr.appendChild(td);
 }
 
-function makeTable()	/*! funkcja tworzaca plansze i wypelniajaca ja plytkami */
+/*! funkcja tworzaca plansze i wypelniajaca ja plytkami */
+function makeTable()	
 {
 	var table = document.getElementById("tablica");
 	var dane = {
